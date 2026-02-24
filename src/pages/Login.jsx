@@ -29,12 +29,6 @@ export function Login() {
     }
   }
 
-  /*OBS: exemplo de como pedir o token para acessar os dados de uma pg
-     fetch("http://localhost:8081/users", {
-            headers: {
-            Authorization: `Bearer ${token}`
-  }
-}) */
 
   return (
     <div className="w-full min-h-screen flex justify-around bg-linear-to-b text-neutral-100">

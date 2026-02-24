@@ -1,6 +1,6 @@
 export function DashboardPage(){
     return(
-        <div>
+        <div className="w-screen h-screen md:p-3">
 
         </div>
     )
