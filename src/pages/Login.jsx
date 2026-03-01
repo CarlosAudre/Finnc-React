@@ -4,6 +4,7 @@ import logo from "../assets/finnc_logo.png";
 import { Submit } from "../components/Submit";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+
 export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

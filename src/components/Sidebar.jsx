@@ -1,8 +1,11 @@
 import { HomeIcon, Wallet, ChartColumn, User, LogOut } from "lucide-react";
 import logo from "../assets/finnc_logo.png";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 export function Sidebar() {
+
+  const{ month, year} = useParams()
+
   const { pathname } = useLocation(); //get the path name
   const navigate = useNavigate();
 
@@ -35,9 +38,9 @@ export function Sidebar() {
           </Link>
 
           <Link
-            to="/expense"
+            to="/period" 
             className={`${
-              pathname === "/expense"
+              pathname === `/period/${year}/${month}`
                 ? "flex gap-2 p-4 rounded-2xl ring-2 border-violet-500/20 bg-violet-500/20 text-violet-400 "
                 : "flex gap-2 p-4"
             }`}

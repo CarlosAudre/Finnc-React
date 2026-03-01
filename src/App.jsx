@@ -4,10 +4,11 @@ import { Register } from "./pages/Register";
 import { Toaster } from "sonner";
 import { Home } from "./pages/Home";
 import { MainLayout } from "./layout/MainLayout";
-import { Expense } from "./pages/Expense";
+import { Period } from "./pages/Period";
 import { DashboardPage } from "./pages/DashboardPage";
 import { Profile } from "./pages/Profile";
 import { ProtectedRoute } from "./infra/ProtectedRoute";
+import { RedirectToCurrentPeriod } from "./components/RedirectToCurrentPeriod";
 
 function App() {
   return (
@@ -26,7 +27,8 @@ function App() {
             }
           >
             <Route path="/" element={<Home />} />
-            <Route path="/expense" element={<Expense />} />
+            <Route path="/period" element={<RedirectToCurrentPeriod />} />
+            <Route path="/period/:year/:month" element={<Period/>} /> 
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/profile" element={<Profile />} />
           </Route>

@@ -23,19 +23,19 @@ export function MainLayout() {
 
       {/* Sidebar Mobile */}
       <div
-        className={`fixed w-64 transform transition-transform duration-300 lg:hidden
+        className={`fixed w-64 z-10 transform transition-transform duration-300 lg:hidden
                   ${isOpen ? "translate-x-0" : "-translate-x-full"}
                  `}
       >
         <Sidebar />
       </div>
 
-      <main className="flex-1 overflow-auto bg-linear-to-br from-[#070C1E] via-[#131631] to-[#2d1063] ">
+      <main className="flex-1 overflow-auto bg-linear-to-br from-[#070C1E] via-[#131631] to-[#2d1063]">
         {/* Botão Mobile */}
-        <button className="lg:hidden p-3" onClick={() => setIsOpen(!isOpen)}>
-           <Menu className="w-10 h-10"/>
+        <button className="fixed lg:hidden p-2 pt-3" onClick={() => setIsOpen(!isOpen)}>
+           <Menu className="w-10 h-10 text-amber-50/70"/>
         </button>
-        <Outlet />
+        <Outlet/>
       </main>
     </div>
   );

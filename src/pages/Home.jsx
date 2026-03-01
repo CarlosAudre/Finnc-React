@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight, Wallet, Banknote, PiggyBank } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "../components/Card";
+import { Button } from "../components/Button";
 
 export function Home() {
   const [userName, setUserName] = useState();
@@ -13,7 +14,7 @@ export function Home() {
       try {
         const token = localStorage.getItem("token");
         if (!token) {
-          throw new Error("Token não encontrado");
+          throw new Error("Token not found");
         }
         const response = await fetch("http://localhost:8081/me", {
           headers: {
@@ -21,7 +22,7 @@ export function Home() {
           },
         });
         if (!response.ok) {
-          throw new Error("Usuário não autenticado");
+          throw new Error("User not authenticated");
         }
         const data = await response.json();
         setUserName(data.name);
@@ -34,7 +35,7 @@ export function Home() {
 
   return (
     <div className="flex flex-col w-auto h-screen md:p-3">
-      <header className="flex flex-col md:flex-row justify-between p-3 m-3">
+      <header className="flex flex-col md:flex-row justify-between p-3 m-3 mt-10 md:mt-5">
         <div className="flex flex-col gap-2">
           <h1
             className={"text-3xl font-semibold"}
@@ -44,15 +45,7 @@ export function Home() {
           >{`Aqui está seu resumo financeiro de fevereiro`}</p>
         </div>
 
-        <div
-          onClick={() => navigate("/expense")}
-          className="flex justify-center items-center bg-linear-to-r from-violet-500 to-violet-900 rounded-md
-         p-5 mt-3 w-50 md:w-auto h-12 cursor-pointer text-yellow-200 font-bold gap-1 hover:from-violet-600 hover:to-violet-950 
-         transition-colors duration-300"
-        >
-          <p>Ver despesas</p>
-          <ArrowRight />
-        </div>
+        <Button title="Ver despesas" onClick={() => navigate("/period")} img={<ArrowRight/>} />
       </header>
 
       <main className="flex flex-col">
@@ -60,7 +53,7 @@ export function Home() {
           className="p-5 gap-10 md:gap-5 lg:gap-15 grid grid-cols-1 md:grid-cols-2 
           lg:grid-cols-3"
         >
-          <Card
+          <Card //Cria um fetch que muda as datas com base na url
             bgColor="bg-violet-500/15"
             bgIconColor="bg-violet-500"
             title="Saldo total"
