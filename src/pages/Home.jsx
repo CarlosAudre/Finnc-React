@@ -6,7 +6,28 @@ import { Button } from "../components/Button";
 
 export function Home() {
   const [userName, setUserName] = useState();
+  const [balance, setBalance] = useState();
+  const [periodTotalSpent, setPeriodTotalSpent] = useState("");
+  const [periodEconomy, setPeriodEconomy] = useState("");
+  const [periodTotalPorcentage, setPeriodTotalPorcentage] = useState("");
+  const [periodContainerCount, setPeriodContainerCount] = useState(0)
+  const today = new Date();
+  const todayYear = today.getFullYear();
+  const todayMonth = today.getMonth() + 1;
+  const monthName = new Date().toLocaleString("pt-BR", {
+    month: "long",
+  });
   const navigate = useNavigate();
+
+  //periodTotal %
+  useEffect(() => {
+    if (Number(balance) > 0) {
+      const periodPorcentage =
+        100 - (Number(periodTotalSpent) * 100) / Number(balance);
+
+      setPeriodTotalPorcentage(periodPorcentage.toFixed(1));
+    }
+  }, [balance, periodTotalSpent]);
 
   useEffect(() => {
     //UseEffect its used when the function is executed only once
@@ -33,6 +54,29 @@ export function Home() {
     getUserName();
   }, []);
 
+  useEffect(() => {
+    async function getPeriod() {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("User not authenticated");
+      }
+      const response = await fetch(
+        `http://localhost:8081/period/${todayYear}/${todayMonth}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      const data = await response.json();
+      setBalance(data.value);
+      setPeriodTotalSpent(data.totalSpent);
+      setPeriodEconomy(data.economy);
+      setPeriodContainerCount(data.containerCount)
+    }
+    getPeriod();
+  }, [todayYear, todayMonth]);
+
   return (
     <div className="flex flex-col w-auto h-screen md:p-3">
       <header className="flex flex-col md:flex-row justify-between p-3 m-3 mt-10 md:mt-5">
@@ -42,10 +86,14 @@ export function Home() {
           >{`Olá, ${userName ? userName : "Carregando usuário"}`}</h1>
           <p
             className={"text-slate-300/70 text-base"}
-          >{`Aqui está seu resumo financeiro de fevereiro`}</p>
+          >{`Aqui está seu resumo financeiro de ${monthName}`}</p>
         </div>
 
-        <Button title="Ver despesas" onClick={() => navigate("/period")} img={<ArrowRight/>} />
+        <Button
+          title="Ver despesas"
+          onClick={() => navigate("/period")}
+          img={<ArrowRight />}
+        />
       </header>
 
       <main className="flex flex-col">
@@ -54,30 +102,30 @@ export function Home() {
           lg:grid-cols-3"
         >
           <Card //Cria um fetch que muda as datas com base na url
-            bgColor="bg-violet-500/15"
-            bgIconColor="bg-violet-500"
+            bgColor="bg-violet-600/20"
+            bgIconColor="bg-violet-600"
             title="Saldo total"
             img={<Wallet />}
-            balance="1500,00"
-            date="Fevereiro 2026"
+            value={`${balance ? balance : 0}`}
+            date={`${monthName} 2026`}
           />
 
           <Card
-            bgColor="bg-[#E83343]/15"
+            bgColor="bg-rose-600/15"
             bgIconColor="bg-[#E83343]"
-            title="Saldo total"
+            title="Total Gasto"
             img={<Banknote />}
-            balance="1500,00"
-            date="Fevereiro 2026"
+            value={`${periodTotalSpent ? periodTotalSpent : 0}`}
+            date={`${periodContainerCount} containers`}
           />
 
           <Card
-            bgColor="bg-[#0e9c87]/15"
+            bgColor="bg-emerald-500/20"
             bgIconColor="bg-[#0e9c87]"
-            title="Saldo total"
+            title="Economia"
             img={<PiggyBank />}
-            balance="1500,00"
-            date="Fevereiro 2026"
+            value={`${periodEconomy ? periodEconomy : 0}`}
+            date={`${periodTotalPorcentage}% do total`}
           />
         </div>
 

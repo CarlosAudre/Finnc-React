@@ -81,6 +81,7 @@ export function Login() {
               placeholder="Insira seu email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              
             />
             <div className="flex flex-col pb-5">
               <Input
@@ -89,6 +90,7 @@ export function Login() {
                 placeholder="Insira sua senha"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                
               />
               <label className="flex gap-2 text-[13px] lg:text-base">
                 <input

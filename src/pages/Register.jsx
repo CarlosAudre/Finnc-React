@@ -106,6 +106,7 @@ export function Register() {
               placeholder="Ex: José Almeida"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              
             />
 
             <Input
@@ -114,6 +115,7 @@ export function Register() {
               placeholder="Ex: jose@gmail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              
             />
 
             <div className="flex flex-col pb-5">

@@ -9,6 +9,7 @@ import { DashboardPage } from "./pages/DashboardPage";
 import { Profile } from "./pages/Profile";
 import { ProtectedRoute } from "./infra/ProtectedRoute";
 import { RedirectToCurrentPeriod } from "./components/RedirectToCurrentPeriod";
+import { ContainerPage } from "./pages/ContainerPage";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/period" element={<RedirectToCurrentPeriod />} />
             <Route path="/period/:year/:month" element={<Period/>} /> 
+            <Route path="/containers/:id" element={<ContainerPage/>}/> 
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/profile" element={<Profile />} />
           </Route>
