@@ -81,7 +81,7 @@ export function Home() {
   }, [todayYear, todayMonth]);
 
   return (
-    <div className="flex flex-col w-auto h-screen md:p-3">
+    <div className="flex flex-col w-auto min-h-screen mb-10 md:mb-0 md:p-3">
       <header className="flex flex-col md:flex-row justify-between p-3 m-3 mt-10 md:mt-5">
         <div className="flex flex-col gap-2">
           <h1

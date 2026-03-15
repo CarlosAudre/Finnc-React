@@ -199,8 +199,8 @@ export function ContainerPage() {
   const color = containerColors[containerColor];
 
   return (
-    <div className="h-screen max-w-5xl mx-auto flex flex-col p-3">
-      <header className="flex flex-col md:flex-row justify-between pt-3 mt-10 m-3 md:mt-5">
+    <div className="min-h-screen max-w-5xl mx-auto flex flex-col p-3">
+      <header className="flex flex-col md:flex-row justify-between pt-3 m-3 mt-5">
         <div className="flex gap-2">
           <button
             title="Voltar"
@@ -214,7 +214,7 @@ export function ContainerPage() {
             <p className="text-slate-300/70 text-base ml-1">{`${monthFullName} ${year}`}</p>
           </div>
         </div>
-        <div className="flex flex-row-reverse md:flex-row justify-between items-center gap-8">
+        <div className="flex flex-row-reverse md:flex-row justify-between items-center gap-8 mx-1">
           <button
             title="Deletar Container"
             className="cursor-pointer p-3 bg-linear-to-r from-violet-500 to-violet-900 rounded-2xl h-13 mt-3
@@ -231,7 +231,7 @@ export function ContainerPage() {
         </div>
       </header>
 
-      <main className="relative flex flex-col p-3">
+      <main className="relative flex flex-col p-3 mb-10 md:mb-0">
         {/*Forms*/}
         {formContainerVisibility && (
           <div className="relative inset-0 w-full lg:w-6xl flex items-center justify-center">
@@ -305,7 +305,7 @@ export function ContainerPage() {
           </div>
         </div>
 
-        {/*Expenses*/}
+        {/*Expenses-----------------------------------------------------------------------------------*/}
         <div>
           <Expenses />
         </div>

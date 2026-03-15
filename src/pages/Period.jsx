@@ -202,7 +202,7 @@ export function Period() {
   const monthFullName = selectedMonth?.fullName || "";
 
   return (
-    <div className="w-auto h-screen flex flex-col md:p-3">
+    <div className="w-auto min-h-screen mb-10 md:mb-0 flex flex-col md:p-3">
       <header className="flex flex-col md:flex-row justify-between p-3 mt-10 m-3 md:mt-5">
         <div className="flex flex-col gap-2">
           <h1 className="text-3xl font-semibold">Despesas</h1>
