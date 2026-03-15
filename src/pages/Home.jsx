@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { Card } from "../components/Card";
 import { Button } from "../components/Button";
 
+//API URL---------------------------------------------------------------------------------------------
+  const apiUrl = "http://localhost:8081";
+
 export function Home() {
   const [userName, setUserName] = useState();
   const [balance, setBalance] = useState();
@@ -37,7 +40,7 @@ export function Home() {
         if (!token) {
           throw new Error("Token not found");
         }
-        const response = await fetch("http://localhost:8081/me", {
+        const response = await fetch(`${apiUrl}/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -61,7 +64,7 @@ export function Home() {
         throw new Error("User not authenticated");
       }
       const response = await fetch(
-        `http://localhost:8081/period/${todayYear}/${todayMonth}`,
+        `${apiUrl}/period/${todayYear}/${todayMonth}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

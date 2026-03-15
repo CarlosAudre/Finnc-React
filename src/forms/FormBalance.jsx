@@ -1,6 +1,6 @@
 import { FormButton } from "../components/FormButton";
 import { Input } from "../components/Input";
-import { FormLayout } from "../layout/FromLayout";
+import { FormLayout } from "../layout/FormLayout";
 
 export function FormBalance({ onChange, value, onCancel, onSubmit }) {
   return (
@@ -11,7 +11,6 @@ export function FormBalance({ onChange, value, onCancel, onSubmit }) {
         type="number"
         value={value}
         onChange={onChange}
-       
       />
 
       <div className="flex justify-between w-full p-2">

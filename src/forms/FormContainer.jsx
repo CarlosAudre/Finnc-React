@@ -1,10 +1,11 @@
 import { ContainerColorSelect } from "../components/ContainerColorSelect";
 import { FormButton } from "../components/FormButton";
 import { Input } from "../components/Input";
-import { FormLayout } from "../layout/FromLayout";
-
+import { FormLayout } from "../layout/FormLayout";
 
 export function FormContainer({
+  titlePlaceHolder,
+  balancePlaceHolder,
   titleValue,
   balanceValue,
   endDateValue,
@@ -16,8 +17,7 @@ export function FormContainer({
   onCancel,
   onSubmit,
 }) {
-
-  const borderColor = "border-2 border-white p-0.5 bg-clip-content"
+  const borderColor = "border-2 border-white p-0.5 bg-clip-content";
 
   const containerColors = [
     { name: "PURPLE", class: "bg-violet-600", hover: "bg-violet-700" },

@@ -8,9 +8,14 @@ import { FormBalance } from "../forms/FormBalance";
 import { FormContainer } from "../forms/FormContainer";
 import { ContainerCard } from "../components/ContainerCard";
 import { toast } from "sonner";
+import { containerColors } from "../constants/ContainerColors";
+import { months } from "../constants/MonthsValue";
 
 export function Period() {
-  //Period
+  //API URL---------------------------------------------------------------------------------------------
+  const apiUrl = "http://localhost:8081";
+
+  //Period---------------------------------------------------------------------------------------------
   const [balance, setBalance] = useState("");
   const [value, setValue] = useState("");
   const [periodTotalPorcentage, setPeriodTotalPorcentage] = useState("");
@@ -19,7 +24,7 @@ export function Period() {
   const [periodEconomy, setPeriodEconomy] = useState("");
   const { year, month } = useParams();
 
-  //Container
+  //Container---------------------------------------------------------------------------------------------
   const [containers, setContainers] = useState([]);
   const [containersVisibility, setContainersVisibility] = useState(false);
   const [containerTitle, setContainerTitle] = useState("");
@@ -27,7 +32,7 @@ export function Period() {
   const [containerEndDate, setContainerEndDate] = useState("");
   const [containerColor, setContainerColor] = useState("PURPLE");
 
-  //periodTotal %
+  //periodTotal %---------------------------------------------------------------------------------------------
   useEffect(() => {
     if (Number(balance) > 0) {
       const periodPorcentage =
@@ -37,68 +42,40 @@ export function Period() {
     }
   }, [balance, periodTotalSpent]);
 
-  //ContainerColors
-  const containerColors = {
-    PURPLE: {
-      solid: "bg-violet-600",
-      soft: "bg-violet-600/20",
-    },
-    BLUE: {
-      solid: "bg-blue-500",
-      soft: "bg-blue-500/20",
-    },
-    GREEN: {
-      solid: "bg-emerald-500",
-      soft: "bg-emerald-500/20",
-    },
-    YELLOW: {
-      solid: "bg-yellow-500",
-      soft: "bg-yellow-500/20",
-    },
-    RED: {
-      solid: "bg-rose-600",
-      soft: "bg-rose-600/20",
-    },
-  };
-
-  //Forms
+  //Forms---------------------------------------------------------------------------------------------
   const [formBalancevisibility, setFormBalanceVisibility] = useState(false);
   const [formContainerVisibility, setFormContainerVisibility] = useState(false);
 
-  //Today
+  //Today---------------------------------------------------------------------------------------------
   const today = new Date();
   const day = today.getDate().toString().padStart(2, "0");
   const formattedMonth = month.toString().padStart(2, "0");
   const todayPeriod = `${year}-${formattedMonth}-${day}`;
 
-  //Converts Endmonth to localDate
+  //Converts Endmonth to localDate---------------------------------------------------------------------------------------------
   function convertEndMonthToFullDate(monthValue) {
     const [year, month] = monthValue.split("-");
     const lastDate = new Date(year, month, 0).getDate();
     return `${monthValue}-${lastDate.toString().padStart(2, "0")}`;
   }
-  console.log;
 
-  //Navigate
+  //Navigate---------------------------------------------------------------------------------------------
   const navigate = useNavigate();
 
-  //FillBalance
+  //FillBalance---------------------------------------------------------------------------------------------
   async function fillBalance() {
     const token = localStorage.getItem("token");
     if (!token) {
       throw new Error("Token not found");
     }
-    const response = await fetch(
-      `http://localhost:8081/period/${year}/${month}/balance`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ value }),
+    const response = await fetch(`${apiUrl}/period/${year}/${month}/balance`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-    );
+      body: JSON.stringify({ value }),
+    });
     if (!response.ok) {
       const error = await response.json();
       toast.error(error.message);
@@ -124,7 +101,7 @@ export function Period() {
     }
   }
 
-  //GetPeriod
+  //GetPeriod---------------------------------------------------------------------------------------------
   useEffect(() => {
     async function getPeriod() {
       try {
@@ -133,14 +110,11 @@ export function Period() {
         if (!token) {
           throw new Error("User not authenticated");
         }
-        const response = await fetch(
-          `http://localhost:8081/period/${year}/${month}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+        const response = await fetch(`${apiUrl}/period/${year}/${month}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
-        );
+        });
         if (!response.ok) {
           throw new Error("Error fetching balance");
         }
@@ -159,38 +133,39 @@ export function Period() {
     getPeriod();
   }, [year, month]);
 
-  //CreateContainer
+  //CreateContainer---------------------------------------------------------------------------------------------
   async function createContainer() {
     if (
       containerTitle.trim() === "" ||
       containerBalance.trim() === "" ||
       containerEndDate.trim() === ""
     ) {
-      return toast.error("Preencha todos os campos");
+      toast.error("Preencha todos os campos");
+      return null;
     }
 
     const token = localStorage.getItem("token");
-    const response = await fetch(`http://localhost:8081/period/containers`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${token}`,
+    const response = await fetch(
+      `${apiUrl}/period/${year}/${month}/containers`,
+      {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          title: containerTitle,
+          totalValue: Number(containerBalance),
+          startDate: todayPeriod,
+          endDate: convertEndMonthToFullDate(containerEndDate),
+          color: containerColor,
+        }),
       },
-      body: JSON.stringify({
-        title: containerTitle,
-        totalValue: Number(containerBalance),
-        startDate: todayPeriod,
-        endDate: convertEndMonthToFullDate(containerEndDate),
-        color: containerColor,
-      }),
-    });
-    console.log("Saldo do período", balance);
-    console.log("Saldo do container", containerBalance);
+    );
+
     if (!response.ok) {
       const error = await response.json();
-      toast.error(error.message);
-      console.log(error);
-      throw new Error("Erro ao criar container");
+      throw new Error(error.message);
     }
     return await response.json();
   }
@@ -199,12 +174,13 @@ export function Period() {
     e.preventDefault();
     try {
       const newContainer = await createContainer();
+      if (!newContainer) return;
       const formattedContainer = {
         id: newContainer.id,
-        title: newContainer.container.title,
-        endDate: newContainer.container.endDate,
+        title: newContainer.title,
+        endDate: newContainer.endDate,
         totalValue: newContainer.totalValue,
-        color: newContainer.container.color,
+        color: newContainer.color,
       };
       const newTotalSpent = periodTotalSpent + Number(containerBalance);
       setPeriodTotalSpent(newTotalSpent);
@@ -221,21 +197,7 @@ export function Period() {
     }
   }
 
-  const months = [
-    { name: "Jan", fullName: "Janeiro", id: 1 },
-    { name: "Fev", fullName: "Fevereiro", id: 2 },
-    { name: "Mar", fullName: "Março", id: 3 },
-    { name: "abr", fullName: "Abril", id: 4 },
-    { name: "Mai", fullName: "Maio", id: 5 },
-    { name: "Jun", fullName: "Junho", id: 6 },
-    { name: "Jul", fullName: "Julho", id: 7 },
-    { name: "Ago", fullName: "Agosto", id: 8 },
-    { name: "Set", fullName: "Setembro", id: 9 },
-    { name: "Out", fullName: "Outubro", id: 10 },
-    { name: "Nov", fullName: "Novembro", id: 11 },
-    { name: "Dez", fullName: "Dezembro", id: 12 },
-  ];
-
+  //Month FullName ---------------------------------------------------------------------------------------------
   const selectedMonth = months.find((m) => m.id === Number(month));
   const monthFullName = selectedMonth?.fullName || "";
 
@@ -325,6 +287,7 @@ export function Period() {
               <p className="text-sm text-slate-300/70 ">{`R$${periodEconomy} disponível para alocar`}</p>
             </div>
             <Button
+              titleButton="Criar Contaienr"
               title="Novo Container"
               onClick={() => setFormContainerVisibility((prev) => !prev)}
               img={<Plus />}
@@ -338,7 +301,9 @@ export function Period() {
               containers.map((c) => (
                 <ContainerCard
                   key={c.id}
-                  onClick={() => navigate(`/containers/${c.id}`)}
+                  onClick={() =>
+                    navigate(`/period/${year}/${month}/containers/${c.id}`)
+                  }
                   title={c.title}
                   endDate={c.endDate}
                   containerTotalValue={c.totalValue}

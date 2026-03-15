@@ -30,7 +30,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/period" element={<RedirectToCurrentPeriod />} />
             <Route path="/period/:year/:month" element={<Period/>} /> 
-            <Route path="/containers/:id" element={<ContainerPage/>}/> 
+            <Route path="/period/:year/:month/containers/:id" element={<ContainerPage/>}/> 
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/profile" element={<Profile />} />
           </Route>

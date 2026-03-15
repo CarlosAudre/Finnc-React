@@ -27,6 +27,7 @@ export function Card({
         </div>
         {img2 && (
           <button
+            title="Adicionar ou editar saldo"
             onClick={onOpenForm}
             className={`flex flex-col justify-center items-center rounded-2xl ${bgIconColor2} cursor-pointer hover:bg-violet-700 w-13 h-13`}
           >

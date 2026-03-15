@@ -1,6 +1,6 @@
-export function Button({onClick, title, img}) {
+export function Button({onClick, title, img, titleButton}) {
   return (
-    <button
+    <button title={titleButton}
       onClick={onClick}
       className="flex justify-center items-center bg-linear-to-r from-violet-500 to-violet-900 rounded-md
          p-5 mt-3 w-50 md:w-auto h-12 cursor-pointer text-yellow-200 font-bold gap-1 hover:from-violet-600 hover:to-violet-950 
