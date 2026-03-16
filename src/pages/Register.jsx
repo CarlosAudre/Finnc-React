@@ -6,6 +6,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { Toaster, toast } from "sonner";
 
 export function Register() {
+
+  const apiUrl = "http://192.168.3.13:8081";
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -38,7 +41,7 @@ export function Register() {
       );
     }
 
-    const response = await fetch("http://localhost:8081/auth/register", {
+    const response = await fetch(`${apiUrl}/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, password }),
@@ -92,7 +95,7 @@ export function Register() {
           onSubmit={handleSubmit}
           className="flex flex-1 items-center justify-center"
         >
-          <div className="flex flex-col p-6 sm:p-10 w-[85%] lg:w-auto bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl">
+          <div className="flex flex-col justify-center items-center p-6 sm:p-10 w-[85%] lg:w-auto bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl">
             <h1 className="lg:hidden text-center text-base text-indigo-400">
               Finnc
             </h1>

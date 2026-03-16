@@ -5,7 +5,7 @@ import { Card } from "../components/Card";
 import { Button } from "../components/Button";
 
 //API URL---------------------------------------------------------------------------------------------
-  const apiUrl = "http://localhost:8081";
+const apiUrl = "http://192.168.3.13:8081";
 
 export function Home() {
   const [userName, setUserName] = useState();
@@ -13,7 +13,7 @@ export function Home() {
   const [periodTotalSpent, setPeriodTotalSpent] = useState("");
   const [periodEconomy, setPeriodEconomy] = useState("");
   const [periodTotalPorcentage, setPeriodTotalPorcentage] = useState("");
-  const [periodContainerCount, setPeriodContainerCount] = useState(0)
+  const [periodContainerCount, setPeriodContainerCount] = useState(0);
   const today = new Date();
   const todayYear = today.getFullYear();
   const todayMonth = today.getMonth() + 1;
@@ -75,7 +75,7 @@ export function Home() {
       setBalance(data.value);
       setPeriodTotalSpent(data.totalSpent);
       setPeriodEconomy(data.economy);
-      setPeriodContainerCount(data.containerCount)
+      setPeriodContainerCount(data.containerCount);
     }
     getPeriod();
   }, [todayYear, todayMonth]);

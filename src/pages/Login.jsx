@@ -14,7 +14,10 @@ export function Login() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:8081/auth/login", {
+    //API URL---------------------------------------------------------------------------------------------
+    const apiUrl = "http://192.168.3.13:8081";
+
+    const response = await fetch(`${apiUrl}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -30,15 +33,15 @@ export function Login() {
     }
   }
 
-
   return (
     <div className="w-full min-h-screen flex justify-around bg-linear-to-b text-neutral-100">
       {/*Lado imagem*/}
       <div className="hidden justify-center lg:flex flex-col text-center w-3/8 pb-50 bg-linear-to-br from-black to-blue-950">
-
         <div className=" flex flex-col gap-2 justify-center items-center">
           <img src={logo} alt="Logo" className="w-2/6" />
-          <h1 className="text-4xl text-indigo-300 font-semibold ml-10">Finnc</h1>
+          <h1 className="text-4xl text-indigo-300 font-semibold ml-10">
+            Finnc
+          </h1>
         </div>
 
         <div className="mt-15">
@@ -70,8 +73,8 @@ export function Login() {
           onSubmit={handleSubmit}
           className="flex flex-1 items-center justify-center"
         >
-          <div className="flex flex-col p-6 sm:p-10 w-[85%] lg:w-auto bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl">
-            <h1 className="lg:hidden text-center text-base text-indigo-400">
+          <div className="flex flex-col justify-center items-center p-6 sm:p-10 w-[85%] lg:w-auto bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl">
+            <h1 className="lg:hidden text-center text-lg text-indigo-400">
               Finnc
             </h1>
             <h2 className="text-2xl lg:text-3xl text-center py-5">Login</h2>
@@ -81,7 +84,6 @@ export function Login() {
               placeholder="Insira seu email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              
             />
             <div className="flex flex-col pb-5">
               <Input
@@ -90,7 +92,6 @@ export function Login() {
                 placeholder="Insira sua senha"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                
               />
               <label className="flex gap-2 text-[13px] lg:text-base">
                 <input

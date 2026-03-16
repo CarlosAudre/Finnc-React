@@ -16,7 +16,7 @@ export function BottonBar() {
   ];
 
   return (
-    <div className="fixed bottom-0 flex justify-between md:hidden p-3.5 px-7 w-screen bg-indigo-950 rounded-md mx-auto">
+    <div className="fixed bottom-0 flex justify-between md:hidden p-4.5 px-7 w-screen bg-indigo-950 rounded-md mx-auto">
       {icons.map(({ icon: Icon, path }, index) => (
         <Link key={index} to={path}>
           <Icon

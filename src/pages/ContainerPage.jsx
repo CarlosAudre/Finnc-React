@@ -11,7 +11,7 @@ import { Message } from "../components/Message";
 
 export function ContainerPage() {
   //API URL---------------------------------------------------------------------------------------------
-  const apiUrl = "http://localhost:8081";
+  const apiUrl = "http://192.168.3.13:8081";
 
   //Container Info-----------------------------------------------------------------------------------------
   const [containerTitle, setContainerTitle] = useState("");
@@ -175,7 +175,7 @@ export function ContainerPage() {
     <>
       <div className="flex justify-between md:flex-col text-center">
         <p className=" text-slate-300/70">Gasto</p>
-        <p className="text-xl md:text-2xl font-semibold">{`R$ 101`}</p>
+        <p className="text-xl md:text-2xl font-semibold">{`R$ 1`}</p>
       </div>
 
       <div className="flex justify-between md:flex-col text-center">
@@ -185,7 +185,7 @@ export function ContainerPage() {
 
       <div className="flex justify-between md:flex-col text-center">
         <p className=" text-slate-300/70">Limite</p>
-        <p className="text-xl md:text-2xl text-slate-300/90 font-semibold">{`R$ 101`}</p>
+        <p className="text-xl md:text-2xl text-slate-300/90 font-semibold">{`R$ 1499`}</p>
       </div>
     </>
   );
