@@ -15,12 +15,14 @@ export function BottonBar() {
     { icon: User, path: "/profile" },
   ];
 
+  const iconSize = "w-6 h-6"
+
   return (
-    <div className="fixed bottom-0 flex justify-between md:hidden p-4.5 px-7 w-screen bg-indigo-950 rounded-md mx-auto">
+    <div className="fixed bottom-0 flex justify-between md:hidden p-4 px-7 w-screen bg-gray-950/75 rounded-md mx-auto">
       {icons.map(({ icon: Icon, path }, index) => (
         <Link key={index} to={path}>
           <Icon
-            className={`${pathname === path ? "w-7 h-7 text-violet-400" : "w-7 h-7"}`}
+            className={`${pathname === path ? `${iconSize} text-violet-400` : `${iconSize}`}`}
           />
         </Link>
       ))}

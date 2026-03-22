@@ -7,7 +7,7 @@ export function FormBalance({ onChange, value, onCancel, onSubmit }) {
     <FormLayout title="Definir saldo" onSubmit={onSubmit}>
       <Input
         title="Saldo total do mês"
-        placeHolder=""
+        placeHolder="R$ 0,00"
         type="number"
         value={value}
         onChange={onChange}

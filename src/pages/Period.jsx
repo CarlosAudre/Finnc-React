@@ -20,7 +20,7 @@ export function Period() {
   const [value, setValue] = useState("");
   const [periodTotalPorcentage, setPeriodTotalPorcentage] = useState("");
   const [periodTotalSpent, setPeriodTotalSpent] = useState("");
-  const [periodContainerCount, setPeriodContainerCount] = useState(0);
+  const [periodContainerCount, setPeriodContainerCount] = useState();
   const [periodEconomy, setPeriodEconomy] = useState("");
   const { year, month } = useParams();
 
@@ -28,17 +28,19 @@ export function Period() {
   const [containers, setContainers] = useState([]);
   const [containersVisibility, setContainersVisibility] = useState(false);
   const [containerTitle, setContainerTitle] = useState("");
-  const [containerBalance, setContainerBalance] = useState("");
+  const [containerBalance, setContainerBalance] = useState();
   const [containerEndDate, setContainerEndDate] = useState("");
   const [containerColor, setContainerColor] = useState("PURPLE");
 
   //periodTotal %---------------------------------------------------------------------------------------------
   useEffect(() => {
     if (Number(balance) > 0) {
-      const periodPorcentage =
-        100 - (Number(periodTotalSpent) * 100) / Number(balance);
+      const periodPorcentage = (
+        (Number(periodTotalSpent) / Number(balance)) *
+        100
+      ).toFixed(1);
 
-      setPeriodTotalPorcentage(periodPorcentage.toFixed(1));
+      setPeriodTotalPorcentage(periodPorcentage);
     }
   }, [balance, periodTotalSpent]);
 
@@ -123,15 +125,17 @@ export function Period() {
         setPeriodEconomy(Number(data.economy));
         setBalance(Number(data.value));
         setContainers(data.containerDtos);
-        setContainersVisibility(true);
         setPeriodContainerCount(data.containerCount);
+        if (containers.length > 0) {
+          setContainersVisibility(true);
+        }
         console.log(data);
       } catch (err) {
         console.log(err.message);
       }
     }
     getPeriod();
-  }, [year, month]);
+  }, [year, month, containers.length]);
 
   //CreateContainer---------------------------------------------------------------------------------------------
   async function createContainer() {
@@ -202,7 +206,7 @@ export function Period() {
   const monthFullName = selectedMonth?.fullName || "";
 
   return (
-    <div className="w-auto min-h-screen mb-10 md:mb-0 flex flex-col md:p-3">
+    <div className="w-auto min-h-screen mb-15 md:h-screen md:mb-0 flex flex-col md:p-3">
       <header className="flex flex-col md:flex-row justify-between p-3 mt-10 m-3 md:mt-5">
         <div className="flex flex-col gap-2">
           <h1 className="text-3xl font-semibold">Despesas</h1>
@@ -307,8 +311,8 @@ export function Period() {
                   title={c.title}
                   endDate={c.endDate}
                   containerTotalValue={c.totalValue}
-                  containerLimite={c.totalValue}
-                  percent={3}
+                  containerLimite={c.economy}
+                  percent={((c.totalSpent / c.totalValue) * 100).toFixed(1)}
                   containerColor={containerColors[c.color].solid} //ex: PURPLE.solid
                   bgColor={containerColors[c.color].soft}
                 />

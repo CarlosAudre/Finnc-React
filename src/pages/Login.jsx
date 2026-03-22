@@ -39,7 +39,7 @@ export function Login() {
       <div className="hidden justify-center lg:flex flex-col text-center w-3/8 pb-50 bg-linear-to-br from-black to-blue-950">
         <div className=" flex flex-col gap-2 justify-center items-center">
           <img src={logo} alt="Logo" className="w-2/6" />
-          <h1 className="text-4xl text-indigo-300 font-semibold ml-10">
+          <h1 className="text-4xl text-indigo-300 font-semibold ">
             Finnc
           </h1>
         </div>

@@ -2,6 +2,24 @@
 body {
   font-family: "Poppins", sans-serif;
 }
+/* Scrollbar */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f0f0f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3d0c5a;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6a2a8f;
+}
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,

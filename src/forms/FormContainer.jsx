@@ -4,8 +4,7 @@ import { Input } from "../components/Input";
 import { FormLayout } from "../layout/FormLayout";
 
 export function FormContainer({
-  titlePlaceHolder,
-  balancePlaceHolder,
+  title,
   titleValue,
   balanceValue,
   endDateValue,
@@ -28,7 +27,7 @@ export function FormContainer({
   ];
 
   return (
-    <FormLayout title="Novo container" onSubmit={onSubmit}>
+    <FormLayout title={title ? title : "Novo Container"} onSubmit={onSubmit}>
       <Input
         title="Título"
         type="text"
