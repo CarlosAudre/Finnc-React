@@ -119,7 +119,7 @@ export function ContainerPage() {
       }
     }
     getContainerInfo();
-  }, [month, year, id, expenses.length]);
+  }, [month, year, id, expenses.length, expenseId]);
 
   //ContainerUpdate-----------------------------------------------------------------------------------------
   async function containerUpdate() {
@@ -185,7 +185,7 @@ export function ContainerPage() {
   async function deleteContainer() {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(
+       await fetch(
         `${apiUrl}/period/${year}/${month}/containers/${id}/all`,
         {
           method: "DELETE",
@@ -270,8 +270,7 @@ export function ContainerPage() {
     e.preventDefault();
     if (
       !expenseTitleUpdate.trim() ||
-      !expenseValueUpdate.trim() ||
-      !expenseEndDateUpdate.trim()
+      !expenseValueUpdate
     ) {
       toast.error("Preencha todos os campos");
       return;
@@ -297,10 +296,21 @@ export function ContainerPage() {
 
   //On Expense Card Click--------------------------------------------------------------------------------------------------------
   function onCardClick(id) {
+    const expense = expenses.find((e) => e.id === id);
+    if (expense) {
+      const endDate = new Date(expense.endDate);
+      const formatted = `${endDate.getFullYear()}-${String(
+        endDate.getMonth() + 1,
+      ).padStart(2, "0")}`;
+
+      setExpenseEndDateUpdate(formatted);
+      setExpenseId(id);
+      setExpenseTitleUpdate(expense.title);
+      setExpenseValueUpdate(expense.value);
+      setExpenseEndDateUpdate(formatted);
+    }
     setFormExpenseUpdateVisibility((prev) => !prev);
-    setExpenseId(id);
   }
-  console.log("Expense id: ", expenseId);
 
   //Delete Expense-----------------------------------------------------------------------------------------
   async function deleteExpense() {
@@ -314,12 +324,15 @@ export function ContainerPage() {
         throw new Error("Erro ao deletar");
       }
       setExpenses((prev) => prev.filter((e) => e.id !== expenseId));
-      setFormExpenseUpdateVisibility((prev => !prev))
-      toast.success("Despesa removida")
+      setFormExpenseUpdateVisibility((prev) => !prev);
+      toast.success("Despesa removida");
     } catch (err) {
       toast.error(err.message);
     }
   }
+
+  console.log("ExpenseId: ", expenseId)
+
   //Container Status-----------------------------------------------------------------------------------------
   const containerStats = (
     <>
@@ -480,7 +493,7 @@ export function ContainerPage() {
                 <p className="text-base text-slate-300/70">
                   Progresso de gastos
                 </p>
-                <p>{containerPercent}</p>
+                <p>{containerPercent}%</p>
               </div>
               <div className="rounded-2xl h-3 bg-gray-700">
                 <div
