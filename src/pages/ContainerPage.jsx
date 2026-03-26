@@ -40,19 +40,18 @@ export function ContainerPage() {
   const [formExpenseUpdateVisibility, setFormExpenseUpdateVisibility] =
     useState(false);
   const [expenseId, setExpenseId] = useState("");
+  const [originalExpenseValue, setOriginalExpenseValue] = useState(0);
 
   //Expense Update
   const [expenseTitleUpdate, setExpenseTitleUpdate] = useState("");
   const [expenseValueUpdate, setExpenseValueUpdate] = useState("");
   const [expenseEndDateUpdate, setExpenseEndDateUpdate] = useState("");
 
+  const { id, month, year } = useParams(); //------------------------- UseParams()
+
   //Start Date--------------------------------------------------------------------------------------------
-  const todayDate = new Date();
-  const firstMonthDay = new Date(
-    todayDate.getFullYear(),
-    todayDate.getMonth(),
-    1,
-  );
+
+  const firstMonthDay = new Date(Number(year), Number(month) - 1, 1);
   const startDateFormatted = firstMonthDay.toISOString().split("T")[0];
 
   //Delete Container-----------------------------------------------------------------------------------------
@@ -77,7 +76,6 @@ export function ContainerPage() {
   }
 
   //Get Container-----------------------------------------------------------------------------------------
-  const { id, month, year } = useParams(); //------------------------- UseParams()
 
   useEffect(() => {
     async function getContainerInfo() {
@@ -173,6 +171,10 @@ export function ContainerPage() {
       const newContainerLimit = containerBalanceUpdate - containerTotalSpent;
       setContainerLimit(newContainerLimit);
 
+      setContainerPercent(
+        ((containerTotalSpent / containerBalanceUpdate) * 100).toFixed(1),
+      );
+
       setFormContainerVisibility(false);
 
       toast.success("Container atualizado");
@@ -185,15 +187,12 @@ export function ContainerPage() {
   async function deleteContainer() {
     try {
       const token = localStorage.getItem("token");
-       await fetch(
-        `${apiUrl}/period/${year}/${month}/containers/${id}/all`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      await fetch(`${apiUrl}/period/${year}/${month}/containers/${id}/all`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
       navigate(`/period/${year}/${month}`);
     } catch (err) {
       toast.error(err.message);
@@ -216,7 +215,12 @@ export function ContainerPage() {
         endDate: convertEndMonthToFullDate(expenseEndDate),
       }),
     });
-    return await response.json();
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message);
+    }
+    return data;
   }
 
   async function handleCreateExpense(e) {
@@ -263,29 +267,37 @@ export function ContainerPage() {
         endDate: convertEndMonthToFullDate(expenseEndDateUpdate),
       }),
     });
-    return await response.json();
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message);
+    }
+    return data;
   }
 
   async function handleUpdateExpense(e) {
     e.preventDefault();
-    if (
-      !expenseTitleUpdate.trim() ||
-      !expenseValueUpdate
-    ) {
+    if (!expenseTitleUpdate.trim() || !expenseValueUpdate) {
       toast.error("Preencha todos os campos");
       return;
     }
     try {
       const update = await updateExpense();
-      const containerNewTotalSpent =
+
+      const newTotalSpent =
         Number(containerTotalSpent) +
         Number(expenseValueUpdate) -
-        Number(expenseValue);
-      const containerNewLimit =
-        Number(containerBalance) - Number(containerNewTotalSpent);
+        Number(originalExpenseValue);
+
       setExpenses((prev) => prev.map((e) => (e.id === expenseId ? update : e)));
-      setContainerTotalSpent(containerNewTotalSpent);
-      setContainerLimit(containerNewLimit);
+
+      setContainerTotalSpent(newTotalSpent);
+      setContainerLimit(Number(containerBalance) - newTotalSpent);
+
+      setContainerPercent(
+        ((newTotalSpent / containerBalance) * 100).toFixed(1),
+      );
 
       setFormExpenseUpdateVisibility((prev) => !prev);
       toast.success("Despesa salva");
@@ -302,12 +314,11 @@ export function ContainerPage() {
       const formatted = `${endDate.getFullYear()}-${String(
         endDate.getMonth() + 1,
       ).padStart(2, "0")}`;
-
-      setExpenseEndDateUpdate(formatted);
       setExpenseId(id);
       setExpenseTitleUpdate(expense.title);
       setExpenseValueUpdate(expense.value);
       setExpenseEndDateUpdate(formatted);
+      setOriginalExpenseValue(expense.value);
     }
     setFormExpenseUpdateVisibility((prev) => !prev);
   }
@@ -331,7 +342,7 @@ export function ContainerPage() {
     }
   }
 
-  console.log("ExpenseId: ", expenseId)
+  console.log("ExpenseId: ", expenseId);
 
   //Container Status-----------------------------------------------------------------------------------------
   const containerStats = (
@@ -342,7 +353,7 @@ export function ContainerPage() {
       </div>
 
       <div className="flex justify-between md:flex-col text-center">
-        <p className=" text-slate-300/70">Disponível</p>
+        <p className=" text-slate-300/70">Total</p>
         <p className="text-xl md:text-2xl text-emerald-400 font-semibold">{`R$ ${containerBalance}`}</p>
       </div>
 

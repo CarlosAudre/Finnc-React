@@ -197,7 +197,7 @@ export function Period() {
       setContainerTitle("");
       setContainerEndDate("");
     } catch (error) {
-      console.log(error);
+      toast.error(error.message)
     }
   }
 
