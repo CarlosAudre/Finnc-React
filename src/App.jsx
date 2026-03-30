@@ -11,6 +11,7 @@ import { ProtectedRoute } from "./infra/ProtectedRoute";
 import { RedirectToCurrentPeriod } from "./components/RedirectToCurrentPeriod";
 import { ContainerPage } from "./pages/ContainerPage";
 import {FincAi} from "./pages/FincAi";
+import { RedirectToCurrentYear } from "./components/RedirectToCurrentYear";
 
 function App() {
   return (
@@ -32,7 +33,8 @@ function App() {
             <Route path="/period" element={<RedirectToCurrentPeriod />} />
             <Route path="/period/:year/:month" element={<Period/>} /> 
             <Route path="/period/:year/:month/containers/:id" element={<ContainerPage/>}/> 
-            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/dashboard" element={<RedirectToCurrentYear/>} />
+            <Route path="/dashboard/:year" element={<DashboardPage/>} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/ficAi" element={<FincAi/>}/>
           </Route>

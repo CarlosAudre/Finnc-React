@@ -52,7 +52,7 @@ export function Sidebar() {
 
           <Link
             to="/dashboard"
-            className={`${pathname === "/dashboard" ? selectedIconClass : nonSelectedIconClass}`}
+            className={`${pathname === `/dashboard/${year}` ? selectedIconClass : nonSelectedIconClass}`}
           >
             <ChartColumn />
             <p className="text-amber-50">Gráficos</p>

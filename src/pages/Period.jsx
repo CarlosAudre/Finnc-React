@@ -10,6 +10,7 @@ import { ContainerCard } from "../components/ContainerCard";
 import { toast } from "sonner";
 import { containerColors } from "../constants/ContainerColors";
 import { months } from "../constants/MonthsValue";
+import { m } from "framer-motion";
 
 export function Period() {
   //API URL---------------------------------------------------------------------------------------------
@@ -18,41 +19,41 @@ export function Period() {
   //Period---------------------------------------------------------------------------------------------
   const [balance, setBalance] = useState("");
   const [value, setValue] = useState("");
-  const [periodTotalPorcentage, setPeriodTotalPorcentage] = useState("");
-  const [periodTotalSpent, setPeriodTotalSpent] = useState("");
-  const [periodContainerCount, setPeriodContainerCount] = useState();
-  const [periodEconomy, setPeriodEconomy] = useState("");
+  const [periodContainerTotalSpent, setPeriodContainerTotalSpent] =
+    useState("");
+  const [periodExpenseTotalSpent, setPeriodExpenseTotalSpent] = useState("");
+  const [periodContainerCount, setPeriodContainerCount] = useState("");
+  const [periodContainerEconomy, setPeriodContainerEconomy] = useState("");
+  const [periodExpenseEconomy, setPeriodExpenseEconomy] = useState("");
   const { year, month } = useParams();
 
   //Container---------------------------------------------------------------------------------------------
   const [containers, setContainers] = useState([]);
   const [containersVisibility, setContainersVisibility] = useState(false);
   const [containerTitle, setContainerTitle] = useState("");
-  const [containerBalance, setContainerBalance] = useState();
+  const [containerBalance, setContainerBalance] = useState("");
   const [containerEndDate, setContainerEndDate] = useState("");
   const [containerColor, setContainerColor] = useState("PURPLE");
 
   //periodTotal %---------------------------------------------------------------------------------------------
-  useEffect(() => {
-    if (Number(balance) > 0) {
-      const periodPorcentage = (
-        (Number(periodTotalSpent) / Number(balance)) *
-        100
-      ).toFixed(1);
-
-      setPeriodTotalPorcentage(periodPorcentage);
-    }
-  }, [balance, periodTotalSpent]);
 
   //Forms---------------------------------------------------------------------------------------------
   const [formBalancevisibility, setFormBalanceVisibility] = useState(false);
   const [formContainerVisibility, setFormContainerVisibility] = useState(false);
 
   //Today---------------------------------------------------------------------------------------------
-  const today = new Date();
-  const day = today.getDate().toString().padStart(2, "0");
-  const formattedMonth = month.toString().padStart(2, "0");
-  const todayPeriod = `${year}-${formattedMonth}-${day}`;
+  function getStartDate(year, month) {
+    const today = new Date();
+    const currentYear = today.getFullYear();
+    const currentMonth = today.getMonth() + 1;
+    
+    if (year == currentYear && month == currentMonth) {
+      const day = today.getDate().toString().padStart(2, "0");
+      return `${year}-${month.toString().padStart(2, "0")}-${day}`;
+    }
+
+    return `${year}-${month.toString().padStart(2, "0")}-01`;
+  }
 
   //Converts Endmonth to localDate---------------------------------------------------------------------------------------------
   function convertEndMonthToFullDate(monthValue) {
@@ -94,7 +95,7 @@ export function Period() {
       }
       await fillBalance();
       const newEconomy = value - balance;
-      setPeriodEconomy((prev) => prev + newEconomy);
+      setPeriodContainerEconomy((prev) => prev + newEconomy);
       setBalance(Number(value));
       setValue("0");
       setFormBalanceVisibility((prev) => !prev);
@@ -121,8 +122,10 @@ export function Period() {
           throw new Error("Error fetching balance");
         }
         const data = await response.json();
-        setPeriodTotalSpent(Number(data.totalSpent));
-        setPeriodEconomy(Number(data.economy));
+        setPeriodContainerTotalSpent(Number(data.containerTotalSpent));
+        setPeriodExpenseTotalSpent(Number(data.expenseTotalSpent));
+        setPeriodContainerEconomy(Number(data.containerEconomy));
+        setPeriodExpenseEconomy(Number(data.expenseEconomy));
         setBalance(Number(data.value));
         setContainers(data.containerDtos);
         setPeriodContainerCount(data.containerCount);
@@ -160,7 +163,7 @@ export function Period() {
         body: JSON.stringify({
           title: containerTitle,
           totalValue: Number(containerBalance),
-          startDate: todayPeriod,
+          startDate: getStartDate(year, month),
           endDate: convertEndMonthToFullDate(containerEndDate),
           color: containerColor,
         }),
@@ -186,9 +189,10 @@ export function Period() {
         totalValue: newContainer.totalValue,
         color: newContainer.color,
       };
-      const newTotalSpent = periodTotalSpent + Number(containerBalance);
-      setPeriodTotalSpent(newTotalSpent);
-      setPeriodEconomy(balance - newTotalSpent);
+      const newTotalSpent =
+        periodContainerTotalSpent + Number(containerBalance);
+      setPeriodContainerTotalSpent(newTotalSpent);
+      setPeriodContainerEconomy(balance - newTotalSpent);
       setPeriodContainerCount((prev) => prev + 1);
 
       setFormContainerVisibility((prev) => !prev);
@@ -197,7 +201,7 @@ export function Period() {
       setContainerTitle("");
       setContainerEndDate("");
     } catch (error) {
-      toast.error(error.message)
+      toast.error(error.message);
     }
   }
 
@@ -207,7 +211,7 @@ export function Period() {
 
   return (
     <div className="w-auto min-h-screen mb-15 md:h-screen md:mb-0 flex flex-col md:p-3">
-      <header className="flex flex-col md:flex-row justify-between p-3 mt-10 m-3 md:mt-5">
+      <header className="flex flex-col md:flex-row justify-between pl-3 mb-3 ml-3 mt-3">
         <div className="flex flex-col gap-2">
           <h1 className="text-3xl font-semibold">Despesas</h1>
           <p className="text-slate-300/70 text-base">{`Gerencie seus gastos de ${monthFullName + " " + year}`}</p>
@@ -252,7 +256,7 @@ export function Period() {
           className="p-5 gap-10 md:gap-5 lg:gap-15 grid grid-cols-1 md:grid-cols-2 
           xl:grid-cols-3"
         >
-          <Card /*Pense em transformar em um componente unificado, para user os dados em outros locais*/
+          <Card
             bgColor="bg-violet-600/20"
             bgIconColor="bg-violet-600"
             bgIconColor2="bg-violet-600"
@@ -260,7 +264,7 @@ export function Period() {
             img={<Wallet />}
             img2={<Pencil />}
             value={`${balance ? balance : 0}`}
-            date={`${monthFullName} ${year}`}
+            info={`${monthFullName} ${year}`}
             onOpenForm={() => setFormBalanceVisibility((prev) => !prev)}
           />
 
@@ -269,8 +273,9 @@ export function Period() {
             bgIconColor="bg-[#E83343]"
             title="Total gasto"
             img={<Banknote />}
-            value={`${periodTotalSpent ? periodTotalSpent : 0}`} //Será introduzido ao ter toda lógica de Containers e despesas, no backend
-            date={`${periodContainerCount} containers`}
+            value={`${periodExpenseTotalSpent ? periodExpenseTotalSpent : 0}`}
+            info={`Gasto em containers: ${periodContainerTotalSpent ? periodContainerTotalSpent : 0}`}
+            info2={`${periodContainerCount} containers`}
           />
 
           <Card
@@ -278,8 +283,8 @@ export function Period() {
             bgIconColor="bg-[#0e9c87]"
             title="Disponível"
             img={<PiggyBank />}
-            value={`${periodEconomy ? periodEconomy : 0}`} //Será introduzido ao ter toda lógica de Containers e despesas, no backend
-            date={`${periodTotalPorcentage}% do total`}
+            value={`${periodExpenseEconomy ? periodExpenseEconomy : 0}`}
+            info={`Disponível para containers: R$ ${periodContainerEconomy ? periodContainerEconomy : 0}`}
           />
         </div>
 
@@ -288,7 +293,7 @@ export function Period() {
           <div className="flex flex-col md:flex-row md:justify-between">
             <div className="flex flex-col gap-1">
               <h3 className="font-semibold text-2xl">Containers</h3>
-              <p className="text-sm text-slate-300/70 ">{`R$${periodEconomy} disponível para alocar`}</p>
+              <p className="text-sm text-slate-300/70 ">{`R$${periodContainerEconomy} disponível para alocar`}</p>
             </div>
             <Button
               titleButton="Criar Contaienr"

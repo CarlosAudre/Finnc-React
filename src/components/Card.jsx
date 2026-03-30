@@ -3,7 +3,8 @@ import { FormBalance } from "../forms/FormBalance";
 export function Card({
   title,
   value,
-  date,
+  info,
+  info2,
   bgIconColor,
   bgIconColor2,
   bgColor,
@@ -16,7 +17,8 @@ export function Card({
       <div className="flex flex-col gap-3">
         <p className="text-slate-300/90 text-base">{title}</p>
         <p className="font-semibold text-3xl">R$ {value}</p>
-        <p className="text-slate-300/70 text-sm">{date}</p>
+        <p className="text-slate-300/70 text-sm">{info}</p>
+        {info2 && <p className="text-slate-300/70 text-sm">{info2}</p>}
       </div>
 
       <div className="flex flex-col gap-2">

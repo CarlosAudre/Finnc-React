@@ -10,7 +10,7 @@ export function BottonBar() {
   const icons = [
     { icon: HomeIcon, path: "/" },
     { icon: Wallet, path: month && year ? `/period/${year}/${month}` : "/period"},
-    { icon: ChartColumn, path: "/dashboard" },
+    { icon: ChartColumn, path: year? `/dashboard/${year}` : "/dashboard" },
     { icon: Bot, path: "/ficAi" },
     { icon: User, path: "/profile" },
   ];

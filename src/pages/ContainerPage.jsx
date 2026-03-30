@@ -374,7 +374,7 @@ export function ContainerPage() {
 
   return (
     <div className="min-h-screen mb-15 md:h-screen md:mb-0 max-w-5xl mx-auto flex flex-col p-3">
-      <header className="flex flex-col md:flex-row justify-between pt-3 m-3 mt-5">
+      <header className="flex flex-col md:flex-row justify-between  m-3 ">
         <div className="flex gap-2">
           <button
             title="Voltar"
