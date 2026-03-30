@@ -6,29 +6,15 @@ import {
   YAxis,
   ResponsiveContainer,
   Tooltip,
-  Legend,
 } from "recharts";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { MonthsPT } from "@/constants/MonthsPt";
 
 export function OverviewChart({ data }) {
-  const monthsPT = {
-    JANUARY: "Janeiro",
-    FEBRUARY: "Fevereiro",
-    MARCH: "Março",
-    APRIL: "Abril",
-    MAY: "Maio",
-    JUNE: "Junho",
-    JULY: "Julho",
-    AUGUST: "Agosto",
-    SEPTEMBER: "Setembro",
-    OCTOBER: "Outubro",
-    NOVEMBER: "Novembro",
-    DECEMBER: "Dezembro",
-  };
 
   const chartData = data.map((d) => ({
-    month: monthsPT[d.month],
+    month: MonthsPT[d.month],
     saldo: d.value,
     gasto: d.totalSpent,
     economia: d.totalEconomy,
@@ -47,6 +33,7 @@ export function OverviewChart({ data }) {
           <CardTitle className="flex justify-between text-white font-semibold text-lg">
             <p>Evolução mensal</p>
             <div className="flex flex-col md:flex-row gap-0.5 md:gap-3">
+
               {legends.map((item) => (
                 <div key={item.label} className="flex items-center gap-1.5">
                   <div
@@ -56,9 +43,10 @@ export function OverviewChart({ data }) {
                   <p className="text-sm md:text-base">{item.label}</p>
                 </div>
               ))}
+
             </div>
           </CardTitle>
-          <Legend />
+          
         </CardHeader>
 
         <CardContent>
@@ -86,7 +74,14 @@ export function OverviewChart({ data }) {
                   domain={[0, "dataMax + 500"]}
                 />
 
-                <Tooltip/> //card
+                <Tooltip //card
+                  contentStyle={{
+                    backgroundColor: "#18181b",
+                    border: "1px solid #27272a",
+                    borderRadius: "8px",
+                  }}
+                  labelStyle={{ color: "#FFFFFF" }}
+                />
 
                 <defs>
                   <linearGradient

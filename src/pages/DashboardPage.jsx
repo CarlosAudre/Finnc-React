@@ -1,6 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { Calendar } from "../components/Calendar";
-import { months } from "../constants/MonthsValue";
 import {
   Wallet,
   PiggyBank,
@@ -28,7 +27,10 @@ export function DashboardPage() {
   const [trendPercentage, setTrendPercentage] = useState("0");
 
   //Overview data--------------------------------------------------------------------------------------
-  const [overviewData, setOverviewData] = useState([""])
+  const [monthChartData, setMonthChartData] = useState([""]);
+
+  //Categories data
+  const [categoriesChartData, setCategoriesChartData] = useState([""]);
 
   const trendClass = `${(trendPercentage < 0 && "text-emerald-400") || (trendPercentage > 0 && "text-red-400") || (trendPercentage == 0 && "text-indigo-500")} h-10 w-9.5`;
   const trendIconClass = `h-10 w-9.5 ${trendClass}`;
@@ -96,12 +98,36 @@ export function DashboardPage() {
         throw new Error(data.message);
       }
       const data = await response.json();
-      setOverviewData(data)
-      
+      setMonthChartData(data);
+
       console.log(data);
     }
 
     getOverviewChartDate();
+  }, [year]);
+
+  useEffect(() => {
+    async function getCategoriesChartDate() {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Token not found");
+      }
+      const response = await fetch(`${apiUrl}/dashboard/${year}/categories`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response) {
+        const data = await response.json();
+        throw new Error(data.message);
+      }
+      const data = await response.json();
+      setCategoriesChartData(data)
+
+      console.log("EITA PRR: ", data);
+    }
+
+    getCategoriesChartDate();
   }, [year]);
 
   return (
@@ -186,9 +212,11 @@ export function DashboardPage() {
           </div>
 
           <div className="flex w-full justify-center mt-3 p-5">
-            {view === "overview" && <OverviewChart data ={overviewData} />}
-            {view === "comparative" && <ComparativeChart />}
-            {view === "categories" && <CategoriesChart />}
+            {view === "overview" && <OverviewChart data={monthChartData} />}
+            {view === "comparative" && (
+              <ComparativeChart data={monthChartData} />
+            )}
+            {view === "categories" && <CategoriesChart data={categoriesChartData} />}
           </div>
         </div>
       </main>
