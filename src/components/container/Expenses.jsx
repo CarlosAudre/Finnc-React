@@ -1,6 +1,6 @@
-import { Button } from "./Button";
 import { Plus} from "lucide-react";
 import { ExpenseCard } from "./ExpenseCard";
+import { Button } from "../Button";
 
 export function Expenses({onClick, expenses, expensesVisibility, onCardClick}) {
   return (

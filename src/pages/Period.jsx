@@ -1,12 +1,12 @@
 import { Wallet, Banknote, PiggyBank, Plus, Pencil } from "lucide-react";
-import { Card } from "../components/Card";
+import { Card } from "../components/period/Card";
 import { Button } from "../components/Button";
-import { Calendar } from "../components/Calendar";
+import { Calendar } from "../components/period/Calendar";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FormBalance } from "../forms/FormBalance";
 import { FormContainer } from "../forms/FormContainer";
-import { ContainerCard } from "../components/ContainerCard";
+import { ContainerCard } from "../components/period/ContainerCard";
 import { toast } from "sonner";
 import { containerColors } from "../constants/ContainerColors";
 import { months } from "../constants/MonthsValue";
@@ -46,7 +46,7 @@ export function Period() {
     const today = new Date();
     const currentYear = today.getFullYear();
     const currentMonth = today.getMonth() + 1;
-    
+
     if (year == currentYear && month == currentMonth) {
       const day = today.getDate().toString().padStart(2, "0");
       return `${year}-${month.toString().padStart(2, "0")}-${day}`;

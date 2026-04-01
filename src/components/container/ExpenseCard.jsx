@@ -1,5 +1,4 @@
 import { Clock } from "lucide-react";
-import { Button } from "./Button";
 
 export function ExpenseCard({ title, endDate, value, onClick}) {
   return (

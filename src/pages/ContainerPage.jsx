@@ -4,7 +4,7 @@ import { ArrowLeft, Clock, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import { months } from "../constants/MonthsValue";
 import { containerColors } from "../constants/ContainerColors";
-import { Expenses } from "../components/Expenses";
+import { Expenses } from "../components/container/Expenses";
 import { toast } from "sonner";
 import { FormContainer } from "../forms/FormContainer";
 import { Message } from "../components/Message";
@@ -379,7 +379,7 @@ export function ContainerPage() {
           <button
             title="Voltar"
             className="flex w-10 h-10 items-center justify-center bg-gray-800 rounded-md cursor-pointer"
-            onClick={() => navigate(`/period/${year}/${month}`)}
+            onClick={() => navigate(-1)}
           >
             <ArrowLeft />
           </button>

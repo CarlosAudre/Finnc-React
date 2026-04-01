@@ -38,7 +38,7 @@ export function ContainerCard({
 
       <div className="flex justify-between mt-6">
         <div className="flex-col">
-          <p className="font-semibold">Disponível</p>
+          <p className="font-semibold">Total</p>
           <p className="text-xl">R$ {containerTotalValue}</p>
         </div>
 

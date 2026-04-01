@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Calendar } from "../components/Calendar";
+import { Calendar } from "../components/period/Calendar";
 import {
   Wallet,
   PiggyBank,
@@ -8,7 +8,7 @@ import {
   TrendingDown,
   MoveRight,
 } from "lucide-react";
-import { Card } from "../components/Card";
+import { Card } from "../components/period/Card";
 import { DaashboardCard } from "@/components/dashboards/DashboardCard";
 import { useEffect, useState } from "react";
 import { OverviewChart } from "@/components/dashboards/OverviewChart";
@@ -122,7 +122,7 @@ export function DashboardPage() {
         throw new Error(data.message);
       }
       const data = await response.json();
-      setCategoriesChartData(data)
+      setCategoriesChartData(data);
 
       console.log("EITA PRR: ", data);
     }
@@ -216,7 +216,9 @@ export function DashboardPage() {
             {view === "comparative" && (
               <ComparativeChart data={monthChartData} />
             )}
-            {view === "categories" && <CategoriesChart data={categoriesChartData} />}
+            {view === "categories" && (
+              <CategoriesChart data={categoriesChartData} />
+            )}
           </div>
         </div>
       </main>

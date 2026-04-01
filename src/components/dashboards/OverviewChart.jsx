@@ -67,11 +67,12 @@ export function OverviewChart({ data }) {
                   tickFormatter={(value) => value.slice(0, 3)}
                 />
 
-                <YAxis
+               <YAxis
+                  width={80}
                   tick={{ fill: "#fff" }}
                   axisLine={false}
                   tickLine={false}
-                  domain={[0, "dataMax + 500"]}
+                  tickFormatter={(value) => `R$ ${value}`}
                 />
 
                 <Tooltip //card

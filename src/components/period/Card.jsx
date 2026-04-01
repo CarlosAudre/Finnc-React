@@ -1,4 +1,4 @@
-import { FormBalance } from "../forms/FormBalance";
+import { FormBalance } from "../../forms/FormBalance";
 
 export function Card({
   title,
