@@ -1,4 +1,4 @@
-import { HomeIcon, Wallet, ChartColumn, User, LogOut, Bot} from "lucide-react";
+import { HomeIcon, Wallet, ChartColumn, User, LogOut, Bot } from "lucide-react";
 import logo from "../assets/finnc_logo.png";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
@@ -13,24 +13,22 @@ export function Sidebar() {
     navigate("/login");
   }
 
-  const selectedIconClass = "flex gap-2 p-4 rounded-2xl ring-2 border-violet-500/20 bg-violet-500/20 text-violet-400";
+  const selectedIconClass =
+    "flex gap-2 p-4 rounded-2xl ring-2  border-violet-500/20 bg-violet-500/20 text-violet-400";
   const nonSelectedIconClass = "flex gap-2 p-4";
 
   return (
-    <div className=" flex h-screen  flex-col justify-self-start gap-10 bg-slate-900 border-2 border-violet-300/8 p-5 w-64 lg:w-85">
+    <div className=" flex h-screen flex-col justify-self-start gap-5 bg-[#060721] border border-indigo-950/80 p-5 py-2 w-64 lg:w-85">
       {/*Logo----------------------------------------------------------------------------------*/}
-      <div onClick={() => navigate("/")} className="flex gap-3 cursor-pointer">
-        <img src={logo} alt="logo" className="w-1/4 h-15  " />
-        <div className="flex flex-col p-1">
-          <h1 className="text-2xl font-semibold">Finnc</h1>
-          <p className="text-sm text-slate-300/70">Gestão financeira</p>
-        </div>
+      <div className="relative -my-2 flex flex-col ml-3  ">
+        <img  onClick={() => navigate("/")} src={logo} alt="logo" className="w-60 h-40 -mx-10 -my-8 absolute cursor-pointer" />
+        <p className="text-sm ml-2 mt-18 text-slate-300/70">Gestão financeira</p>
       </div>
 
       {/* Conteúdo */}
-      <div className="flex flex-col justify-between h-full gap-10">
+      <div className="flex flex-col justify-between h-full mt-8 gap-10">
         {/* Principal -----------------------------------------------------------------------*/}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
           <Link
             to="/"
             className={`${pathname === "/" ? selectedIconClass : nonSelectedIconClass}`}
@@ -43,7 +41,8 @@ export function Sidebar() {
             to="/period"
             className={`${
               pathname === `/period/${year}/${month}`
-                ? selectedIconClass : nonSelectedIconClass
+                ? selectedIconClass
+                : nonSelectedIconClass
             }`}
           >
             <Wallet />
@@ -58,13 +57,14 @@ export function Sidebar() {
             <p className="text-amber-50">Gráficos</p>
           </Link>
 
-          <Link 
+          {/* FicAI */}
+          {/* <Link 
           to={"/ficAi"}
           className={`${pathname === "/ficAi" ? selectedIconClass : nonSelectedIconClass}`}
           >
             <Bot/>
              <p className="text-amber-50">FicAi</p>
-          </Link>
+          </Link>*/}
         </div>
 
         {/* Profile */}

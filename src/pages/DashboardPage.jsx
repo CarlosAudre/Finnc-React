@@ -45,6 +45,8 @@ export function DashboardPage() {
 
   const { year } = useParams();
   const [view, setView] = useState("overview");
+  const viewClass = "bg-linear-to-r from-[#3B1BB8] to-[#3246e1] text-amber-50 font-semibold";
+
   const navigate = useNavigate();
 
   const navigateToPreviousYear = () => {
@@ -134,7 +136,7 @@ export function DashboardPage() {
     <div className="w-full mb-15 md:h-screen md:mb-0 flex flex-col md:p-3">
       <header className="flex flex-col md:flex-row justify-between gap-2 pl-3 mb-3 ml-3 mt-3 ">
         <div className="flex flex-col gap-2">
-          <h1 className="text-3xl font-semibold">Gráficos</h1>
+          <h1 className="text-3xl text-[#5D5CF8] font-semibold">Gráficos</h1>
           <p className="text-slate-300/70 text-base">
             Visualize a evolução das suas finanças
           </p>
@@ -182,7 +184,7 @@ export function DashboardPage() {
             bgColor="bg-blue-500/20"
             period={"vs mês anterior"}
             title="Tendencia de gastos"
-            value={`+${trendPercentage}%`}
+            value={`${trendPercentage > 0 ? `+${trendPercentage}` : trendPercentage}%`}
             textColor={`${trendClass}`}
           />
         </div>
@@ -191,21 +193,21 @@ export function DashboardPage() {
           <div className="flex bg-gray-500/10  border-2  border-gray-500/30 rounded-2xl p-3 w-fit md:w-100 h-fit gap-3.5 text-slate-300/70 justify-center ">
             <button
               onClick={() => setView("overview")}
-              className={`${view === "overview" ? "bg-violet-500 text-amber-50 font-semibold" : "bg-none"} p-2 rounded-md cursor-pointer`}
+              className={`${view === "overview" ? `${viewClass}` : "bg-none"} p-2 py-3 rounded-md cursor-pointer`}
             >
               <p className="text-sm md:text-base">Visão geral</p>
             </button>
 
             <button
               onClick={() => setView("comparative")}
-              className={`${view === "comparative" ? "bg-violet-500 text-amber-50 font-semibold" : "bg-none"} p-2 rounded-md cursor-pointer`}
+              className={`${view === "comparative" ? `${viewClass}` : "bg-none"} p-2 py-3  rounded-md cursor-pointer`}
             >
               <p className="text-sm md:text-base">Comparativo</p>
             </button>
 
             <button
               onClick={() => setView("categories")}
-              className={`${view === "categories" ? "bg-violet-500 text-amber-50 font-semibold" : "bg-none"} p-2 rounded-md cursor-pointer`}
+              className={`${view === "categories" ? `${viewClass}` : "bg-none"} p-2 py-3  rounded-md cursor-pointer`}
             >
               <p className="text-sm md:text-base">Categorias</p>
             </button>

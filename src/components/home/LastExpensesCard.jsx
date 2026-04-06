@@ -1,6 +1,6 @@
 import { Wallet } from "lucide-react";
 
-export function LastExpensesCard({onClick, title, value, containerTitle}){
+export function LastExpensesCard({onClick, title, value, containerTitle, color}){
     return(
         <button
       onClick={onClick}
@@ -9,7 +9,7 @@ export function LastExpensesCard({onClick, title, value, containerTitle}){
         "
     >
       <div className="flex gap-4">
-        <div className="flex w-12 h-12 items-center justify-center bg-violet-800 p-2 rounded-2xl text-violet-300">
+        <div className={`flex w-12 h-12 items-center justify-center ${color} p-2 rounded-2xl text-white`}>
           <Wallet />
         </div>
         <div className="flex flex-col text-left">

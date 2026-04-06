@@ -2,7 +2,8 @@ import { Plus} from "lucide-react";
 import { ExpenseCard } from "./ExpenseCard";
 import { Button } from "../Button";
 
-export function Expenses({onClick, expenses, expensesVisibility, onCardClick}) {
+export function Expenses({onClick, expenses, expensesVisibility, onCardClick, containerLimit}) {
+  const noBalance = containerLimit <= 0
   return (
     <div className="flex flex-col pt-3 mt-10 m-3 md:mt-5 gap-5">
       <div className="flex flex-col md:flex-row  justify-between md:items-center">
@@ -12,6 +13,8 @@ export function Expenses({onClick, expenses, expensesVisibility, onCardClick}) {
           title="Nova Despesa"
           onClick={onClick}
           img={<Plus />}
+          disabled={noBalance}
+
         />
       </div>
 

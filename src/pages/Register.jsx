@@ -4,9 +4,10 @@ import logo from "../assets/finnc_logo.png";
 import { Submit } from "../components/Submit";
 import { Link, useNavigate } from "react-router-dom";
 import { Toaster, toast } from "sonner";
+import { LeftPart } from "@/components/auth/LeftPart";
+import { Mail, Lock, User } from "lucide-react";
 
 export function Register() {
-
   const apiUrl = "http://192.168.3.13:8081";
 
   const [name, setName] = useState("");
@@ -58,47 +59,34 @@ export function Register() {
 
   return (
     <div className="w-full min-h-screen flex justify-around bg-linear-to-b text-neutral-100">
-      {/*Lado imagem*/}
-      <div className="hidden justify-center lg:flex flex-col text-center w-3/8 pb-50 bg-linear-to-br from-black to-blue-950">
-        <div className=" flex flex-col gap-2 justify-center items-center">
-          <img src={logo} alt="Logo" className="w-2/6" />
-          <h1 className="text-4xl text-indigo-300 font-semibold">
-            Finnc
-          </h1>
-        </div>
-
-        <div className="mt-15">
-          <h2 className=" text-3xl font-semibold ml-3">Domine suas finanças</h2>
-          <p className="text-slate-300/70 mt-2 text-lg md:text-2xl ml-3">
-            Simples, claro e eficiente
-          </p>
-        </div>
-      </div>
+      <LeftPart />
 
       {/*Lado form*/}
-      <div className="flex flex-col min-h-max w-full lg:w-7/8 bg-linear-to-tr from-sky-950 via-slate-700 to-slate-600">
-        <nav className="flex flex-col sm:flex-row m-3 p-3 gap-4 sm:gap-8 items-center justify-end">
-          <p className="text-sm md:text-base p-2">Já possui uma conta?</p>
+      <div className="flex flex-col min-h-max w-full lg:w-7/8 bg-linear-to-br from-[#12182D] from-75% to-violet-950 to-100%">
+        <nav className="relative flex flex-col sm:flex-row m-3 p-3 gap-4 sm:gap-8 items-center justify-end">
+          <div className="w-full lg:hidden">
+            <img
+              className="flex w-35 h-22 absolute -top-6 -left-5"
+              src={logo}
+              alt="Logo"
+            ></img>
+          </div>
+          <p className="text-sm md:text-base mt-3">Já possui uma conta?</p>
           <Link
-            className="text-sm md:text-base hover:text-indigo-300 border-2 rounded-md p-2"
+            className="text-sm md:text-base  hover:text-violet-400 hover:border-violet-600 border-2 rounded-md p-2"
             to="/login"
           >
             Fazer login
           </Link>
         </nav>
-        <div className=" flex flex-col text-center lg:hidden">
-          <p className="text-sm text-slate-300/70 md:text-2xl ">
-            Seja dominante de sí mesmo.
-          </p>
-        </div>
         <form
           onSubmit={handleSubmit}
           className="flex flex-1 items-center justify-center"
         >
-          <div className="flex flex-col justify-center items-center p-6 sm:p-10 w-[85%] lg:w-auto bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl">
-            <h1 className="lg:hidden text-center text-base text-indigo-400">
-              Finnc
-            </h1>
+          <div
+            className="flex flex-col justify-center items-center mb-38 p-6 sm:p-10 w-[85%] lg:w-auto
+           bg-blue-950/10 backdrop-blur-md border-2 border-white/10 rounded-2xl shadow-xl "
+          >
             <h2 className="text-base lg:text-3xl text-center py-5">
               Criar nova conta
             </h2>
@@ -109,7 +97,7 @@ export function Register() {
               placeholder="Ex: José Almeida"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              
+              Icon={User}
             />
 
             <Input
@@ -118,7 +106,7 @@ export function Register() {
               placeholder="Ex: jose@gmail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              
+              Icon={Mail}
             />
 
             <div className="flex flex-col pb-5">
@@ -128,6 +116,7 @@ export function Register() {
                 placeholder="Ex: 325498jk@GEX"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                Icon={Lock}
               />
               <label className="flex gap-2">
                 <input

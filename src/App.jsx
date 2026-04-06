@@ -10,14 +10,16 @@ import { Profile } from "./pages/Profile";
 import { ProtectedRoute } from "./infra/ProtectedRoute";
 import { RedirectToCurrentPeriod } from "./components/RedirectToCurrentPeriod";
 import { ContainerPage } from "./pages/ContainerPage";
-import {FincAi} from "./pages/FincAi";
+import { FincAi } from "./pages/FincAi";
 import { RedirectToCurrentYear } from "./components/RedirectToCurrentYear";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <>
       <Toaster position="top-center" richColors />
       <Router>
+        <ScrollToTop />
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -31,12 +33,15 @@ function App() {
           >
             <Route path="/" element={<Home />} />
             <Route path="/period" element={<RedirectToCurrentPeriod />} />
-            <Route path="/period/:year/:month" element={<Period/>} /> 
-            <Route path="/period/:year/:month/containers/:id" element={<ContainerPage/>}/> 
-            <Route path="/dashboard" element={<RedirectToCurrentYear/>} />
-            <Route path="/dashboard/:year" element={<DashboardPage/>} />
+            <Route path="/period/:year/:month" element={<Period />} />
+            <Route
+              path="/period/:year/:month/containers/:id"
+              element={<ContainerPage />}
+            />
+            <Route path="/dashboard" element={<RedirectToCurrentYear />} />
+            <Route path="/dashboard/:year" element={<DashboardPage />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/ficAi" element={<FincAi/>}/>
+            <Route path="/ficAi" element={<FincAi />} />
           </Route>
         </Routes>
       </Router>

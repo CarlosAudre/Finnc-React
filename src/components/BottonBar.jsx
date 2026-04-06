@@ -11,7 +11,7 @@ export function BottonBar() {
     { icon: HomeIcon, path: "/" },
     { icon: Wallet, path: month && year ? `/period/${year}/${month}` : "/period"},
     { icon: ChartColumn, path: year? `/dashboard/${year}` : "/dashboard" },
-    { icon: Bot, path: "/ficAi" },
+   // { icon: Bot, path: "/ficAi" },
     { icon: User, path: "/profile" },
   ];
 

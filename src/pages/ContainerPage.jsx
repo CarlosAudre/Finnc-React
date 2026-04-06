@@ -22,6 +22,9 @@ export function ContainerPage() {
   const [containerTotalSpent, setContainerTotalSpent] = useState(0);
   const [containerLimit, setContainerLimit] = useState(0);
   const [containerPercent, setContainerPercent] = useState(0);
+  const [periodLimit, setPeriodLimit] = useState(0);
+
+  const noLimit = periodLimit <= 0;
 
   //Container Update-----------------------------------------------------------------------------------------
   const [containerTitleUpdate, setContainerTitleUpdate] = useState("");
@@ -98,6 +101,7 @@ export function ContainerPage() {
         setContainerBalance(data.totalValue);
         setContainerTotalSpent(data.totalSpent);
         setContainerLimit(data.economy);
+        setPeriodLimit(data.periodContainerEconomy);
         setContainerColor(data.color);
         setExpenses(data.expenseDtos);
 
@@ -384,23 +388,29 @@ export function ContainerPage() {
             <ArrowLeft />
           </button>
           <div className="flex flex-col gap-2">
-            <h1 className="text-3xl font-semibold">{`${containerTitle}`}</h1>
+            <h1 className="text-3xl text-[#5D5CF8] font-semibold">{`${containerTitle}`}</h1>
             <p className="text-slate-300/70 text-base ml-1">{`${monthFullName} ${year}`}</p>
           </div>
         </div>
         <div className="flex flex-row-reverse md:flex-row justify-between items-center gap-8 mx-1">
           <button
             title="Deletar Container"
-            className="cursor-pointer p-3 bg-linear-to-r from-violet-500 to-violet-900 rounded-2xl h-13 mt-3
-             hover:from-violet-600 hover:to-violet-950 transition-colors duration-300 "
+            className="cursor-pointer p-3 bg-linear-to-r from-[#3B1BB8] to-[#3246e1] shadow-lg 
+            hover:from-[#2f1694] hover:to-[#2a3bbf] rounded-2xl h-13 mt-3
+            "
             onClick={() => setDeleteContainerVisibility((prev) => !prev)}
           >
             <Trash />
           </button>
           <Button
-            titleButton="Editar Container"
+            titleButton={
+              noLimit
+                ? `Saldo insuficiente: é necessário ter mais de ${Math.abs(periodLimit)} neste mês para editar o container.`
+                : "Editar container"
+            }
             title="Editar Container"
             onClick={() => setFormContainerVisibility((prev) => !prev)}
+            disabled={noLimit}
           />
         </div>
       </header>
@@ -527,6 +537,7 @@ export function ContainerPage() {
             onCardClick={onCardClick}
             expenses={expenses}
             expensesVisibility={expensesVisibility}
+            containerLimit={containerLimit}
           />
         </div>
       </main>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, Wallet, Banknote, PiggyBank } from "lucide-react";
+import { ArrowRight, Wallet, Banknote, PiggyBank, PlusIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/Button";
 import { HomeSummaryCard } from "@/components/home/HomeSummaryCard";
@@ -25,7 +25,7 @@ export function Home() {
   //-------------------------------------------------------------------------------------------------
   const [containerData, setContainerData] = useState([]);
   //-------------------------------------------------------------------------------------------------
-  const [expenseData, setExpenseData] = useState([])
+  const [expenseData, setExpenseData] = useState([]);
   const today = new Date();
   const todayYear = today.getFullYear();
   const todayMonth = today.getMonth() + 1;
@@ -107,7 +107,6 @@ export function Home() {
       );
       const data = await response.json();
       setContainerData(data);
-      console.log(data);
     }
     getMostExpensivesContainers();
   }, [todayYear, todayMonth]);
@@ -133,7 +132,7 @@ export function Home() {
       );
       const data = await response.json();
       console.log(data);
-      setExpenseData(data)
+      setExpenseData(data);
     }
     getLastExpenses();
   }, [todayYear, todayMonth]);
@@ -146,10 +145,10 @@ export function Home() {
       <header className="flex flex-col md:flex-row justify-between pl-3 mb-3 ml-3 mt-3">
         <div className="flex flex-col gap-2">
           <h1
-            className={"text-3xl font-semibold"}
+            className={"text-3xl font-semibold text-indigo-400"}
           >{`Olá, ${userName ? userName : "Carregando usuário"}`}</h1>
           <p
-            className={"text-slate-300/70 text-base"}
+            className={"text-slate-300/90 text-base"}
           >{`Aqui está seu resumo financeiro de ${monthName}`}</p>
         </div>
 
@@ -169,38 +168,66 @@ export function Home() {
             percentage={periodPercent}
           />
 
-          <div className="flex flex-col p-1 gap-5 w-full">
-            <h3 className="text-lg font-semibold">Maiores Gastos do Mês</h3>
-            {containerData.map((data) => (
-              <MostExpentCategories
-                onClick={() => onContainerClick(data.id)}
-                key={data.id}
-                title={data.title}
-                totalValue={data.totalValue}
-                totalSpent={data.totalSpent}
-                color={containerColors[data.color].solid}
-                percent={(
-                  (Number(data.totalSpent) / Number(data.totalValue)) *
-                  100
-                ).toFixed(1)}
-              />
-            ))}
-          </div>
-          <div className="flex flex-col p-1 gap-5 w-full">
-            <h3 className="text-lg font-semibold">
-              Últimas Despesas Adicionadas
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {expenseData.map((data) => (
-                <LastExpensesCard
-                onClick={() => onContainerClick(data.id)}
-                title={data.title}
-                value={data.value}
-                containerTitle={data.containerTitle}
-              />
+          {containerData.length > 0 ? (
+            <div className="flex flex-col p-1 gap-5 w-full">
+              <h3 className="text-lg font-semibold">Maiores Gastos do Mês</h3>
+
+              {containerData.map((data) => (
+                <MostExpentCategories
+                  onClick={() => onContainerClick(data.id)}
+                  key={data.id}
+                  title={data.title}
+                  totalValue={data.totalValue}
+                  totalSpent={data.totalSpent}
+                  color={containerColors[data.color].solid}
+                  percent={(
+                    (Number(data.totalSpent) / Number(data.totalValue)) *
+                    100
+                  ).toFixed(1)}
+                />
               ))}
             </div>
-          </div>
+          ) : (
+            <div className="w-full bg-zinc-50/5 rounded-2xl py-10 md:py-20 mt-3">
+              <div className="flex flex-col justify-center items-center gap-2">
+                <div className="flex bg-linear-to-r from-[#3B1BB8] to-[#3246e1] rounded-md p-4 mb-4">
+                  <PlusIcon className="w-10 h-10" />
+                </div>
+                <h1 className="font-semibold text-lg">
+                  Crie seu primeiro container
+                </h1>
+                <p className="text-gray-400/80 text-center max-w-md mx-auto">
+                 Crie um container para começar a organizar suas despesas
+                </p>
+                <Button
+                  titleButton="Criar Container"
+                  title="Criar Container"
+                  onClick={() => navigate("/period")}
+                />
+              </div>
+            </div>
+          )}
+
+          {expenseData.length > 0 ? (
+            <div className="flex flex-col p-1 gap-5 w-full">
+              <h3 className="text-lg font-semibold">
+                Últimas Despesas Adicionadas
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {expenseData.map((data) => (
+                  <LastExpensesCard
+                    key={data.id}
+                    onClick={() => onContainerClick(data.id)}
+                    title={data.title}
+                    value={data.value}
+                    containerTitle={data.containerTitle}
+                    color={containerColors[data.color].solid}
+                  />
+                ))}
+              </div>
+            </div>
+          ) : null}
         </div>
       </main>
     </div>

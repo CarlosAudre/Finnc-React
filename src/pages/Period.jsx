@@ -1,4 +1,11 @@
-import { Wallet, Banknote, PiggyBank, Plus, Pencil } from "lucide-react";
+import {
+  Wallet,
+  Banknote,
+  PiggyBank,
+  Plus,
+  Pencil,
+  PlusIcon,
+} from "lucide-react";
 import { Card } from "../components/period/Card";
 import { Button } from "../components/Button";
 import { Calendar } from "../components/period/Calendar";
@@ -10,7 +17,6 @@ import { ContainerCard } from "../components/period/ContainerCard";
 import { toast } from "sonner";
 import { containerColors } from "../constants/ContainerColors";
 import { months } from "../constants/MonthsValue";
-import { m } from "framer-motion";
 
 export function Period() {
   //API URL---------------------------------------------------------------------------------------------
@@ -29,11 +35,12 @@ export function Period() {
 
   //Container---------------------------------------------------------------------------------------------
   const [containers, setContainers] = useState([]);
-  const [containersVisibility, setContainersVisibility] = useState(false);
   const [containerTitle, setContainerTitle] = useState("");
   const [containerBalance, setContainerBalance] = useState("");
   const [containerEndDate, setContainerEndDate] = useState("");
   const [containerColor, setContainerColor] = useState("PURPLE");
+
+  const noBalance = periodContainerEconomy <= 0;
 
   //periodTotal %---------------------------------------------------------------------------------------------
 
@@ -94,8 +101,10 @@ export function Period() {
         return;
       }
       await fillBalance();
-      const newEconomy = value - balance;
-      setPeriodContainerEconomy((prev) => prev + newEconomy);
+      const newContainerEconomy = value - balance;
+      const newExpentEconomy = Number(value) - Number(periodExpenseTotalSpent);
+      setPeriodContainerEconomy((prev) => prev + newContainerEconomy);
+      setPeriodExpenseEconomy(newExpentEconomy);
       setBalance(Number(value));
       setValue("0");
       setFormBalanceVisibility((prev) => !prev);
@@ -129,16 +138,13 @@ export function Period() {
         setBalance(Number(data.value));
         setContainers(data.containerDtos);
         setPeriodContainerCount(data.containerCount);
-        if (containers.length > 0) {
-          setContainersVisibility(true);
-        }
         console.log(data);
       } catch (err) {
         console.log(err.message);
       }
     }
     getPeriod();
-  }, [year, month, containers.length]);
+  }, [year, month]);
 
   //CreateContainer---------------------------------------------------------------------------------------------
   async function createContainer() {
@@ -213,7 +219,7 @@ export function Period() {
     <div className="w-auto min-h-screen mb-15 md:h-screen md:mb-0 flex flex-col md:p-3">
       <header className="flex flex-col md:flex-row justify-between pl-3 mb-3 ml-3 mt-3">
         <div className="flex flex-col gap-2">
-          <h1 className="text-3xl font-semibold">Despesas</h1>
+          <h1 className="text-3xl text-[#5D5CF8] font-semibold">Despesas</h1>
           <p className="text-slate-300/70 text-base">{`Gerencie seus gastos de ${monthFullName + " " + year}`}</p>
         </div>
 
@@ -274,7 +280,7 @@ export function Period() {
             title="Total gasto"
             img={<Banknote />}
             value={`${periodExpenseTotalSpent ? periodExpenseTotalSpent : 0}`}
-            info={`Gasto em containers: ${periodContainerTotalSpent ? periodContainerTotalSpent : 0}`}
+            info={`Gasto em containers: R$ ${periodContainerTotalSpent ? periodContainerTotalSpent : 0}`}
             info2={`${periodContainerCount} containers`}
           />
 
@@ -295,18 +301,27 @@ export function Period() {
               <h3 className="font-semibold text-2xl">Containers</h3>
               <p className="text-sm text-slate-300/70 ">{`R$${periodContainerEconomy} disponível para alocar`}</p>
             </div>
-            <Button
-              titleButton="Criar Contaienr"
+            {containers.length > 0 && (<Button
+              titleButton={
+                noBalance
+                  ? `Saldo insuficiente: adicione maisnpm R$${Math.abs(periodContainerEconomy) + 1} no mês para criar um container `
+                  : "Criar Container"
+              }
               title="Novo Container"
               onClick={() => setFormContainerVisibility((prev) => !prev)}
               img={<Plus />}
-            />
+              disabled={noBalance}
+            />)}
           </div>
           <div
-            className="gap-10 md:gap-5 lg:gap-15 grid grid-cols-1 md:grid-cols-2 
-          xl:grid-cols-3 mt-7"
+            className={`gap-10 md:gap-5 lg:gap-15 mt-7
+            ${
+              containers.length > 0
+                ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
+                : "w-full bg-zinc-50/5 rounded-2xl py-10 md:py-20"
+            }`}
           >
-            {containersVisibility &&
+            {containers.length > 0 ? (
               containers.map((c) => (
                 <ContainerCard
                   key={c.id}
@@ -321,7 +336,31 @@ export function Period() {
                   containerColor={containerColors[c.color].solid} //ex: PURPLE.solid
                   bgColor={containerColors[c.color].soft}
                 />
-              ))}
+              ))
+            ) : (
+              <div className="flex flex-col justify-center items-center gap-2">
+                <div className="flex bg-linear-to-r from-[#3B1BB8] to-[#3246e1] rounded-md p-4 mb-4">
+                  <PlusIcon className="w-10 h-10" />
+                </div>
+                <h1 className="font-semibold text-lg">
+                  Crie seu primeiro container
+                </h1>
+                <p className="text-gray-400/80 text-center max-w-md mx-auto">
+                  Organize suas despesas em containers como Alimentação,
+                  Transporte, Lazer e muito mais.
+                </p>
+                <Button
+                  titleButton={
+                    noBalance
+                      ? `Saldo insuficiente: adicione maisnpm R$${Math.abs(periodContainerEconomy) + 1} no mês para criar um container `
+                      : "Criar Container"
+                  }
+                  title="Criar Container"
+                  onClick={() => setFormContainerVisibility((prev) => !prev)}
+                  disabled={noBalance}
+                />
+              </div>
+            )}
           </div>
         </div>
       </main>
