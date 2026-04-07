@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "../components/Button";
-import { ArrowLeft, Clock, Trash } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import { months } from "../constants/MonthsValue";
 import { containerColors } from "../constants/ContainerColors";
@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { FormContainer } from "../forms/FormContainer";
 import { Message } from "../components/Message";
 import { FormExpense } from "../forms/FormExpense";
+import { FormatDateToString } from "@/constants/FormatDateToString";
 
 export function ContainerPage() {
   //API URL---------------------------------------------------------------------------------------------
@@ -22,6 +23,9 @@ export function ContainerPage() {
   const [containerTotalSpent, setContainerTotalSpent] = useState(0);
   const [containerLimit, setContainerLimit] = useState(0);
   const [containerPercent, setContainerPercent] = useState(0);
+  const [containerCreatedAt, setContainerCreatedAt] = useState("");
+  const date = new Date(containerCreatedAt)
+  const containerCreatedDay = date.getDate();
   const [periodLimit, setPeriodLimit] = useState(0);
 
   const noLimit = periodLimit <= 0;
@@ -104,6 +108,7 @@ export function ContainerPage() {
         setPeriodLimit(data.periodContainerEconomy);
         setContainerColor(data.color);
         setExpenses(data.expenseDtos);
+        setContainerCreatedAt(data.createdAt);
 
         if (expenses.length > 0) {
           setExpensesVisibility(true);
@@ -500,12 +505,23 @@ export function ContainerPage() {
         <div
           className={`flex flex-col ${color ? color.soft : "bg-none"} rounded-2xl p-5 md:p-8 gap-4`}
         >
-          <div
-            className={`flex text-sm font-semibold text-amber-300 ${containerColor === "YELLOW" ? "bg-gray-950/50" : "bg-amber-300/20"} w-fit  gap-2 p-3 rounded-md`}
-          >
-            <Clock className="w-5 h-5" />
-            <p className="">{`Até ${containerEndDate}`}</p>
+          <div className="flex flex-col gap-2">
+            <p className="font-semibold text-xl text-center md:text-left">
+              {FormatDateToString(containerCreatedAt)}
+            </p>
+            <div className="flex flex-col md:flex-row gap-2 items-center">
+              <p className="flex gap-2 text-slate-300/90 items-center">
+                <Calendar className="w-4 h-4 mb-1" /> Criado em {containerCreatedDay} de {FormatDateToString(containerCreatedAt)}
+              </p>
+              <div className="w-full h-px md:w-1 md:h-1 md:rounded-full bg-zinc-50/70 mx-2" />
+              <p className="text-amber-300/90 flex gap-2 items-center">
+                <Clock className="w-4 h-4" /> Até{" "}
+                {FormatDateToString(containerEndDate)}
+              </p>
+            </div>
           </div>
+
+          <div className="w-full h-px bg-zinc-50/10" />
 
           <div className="flex flex-col md:flex-row gap-10">
             {/*Progress bar*/}

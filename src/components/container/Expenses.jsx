@@ -27,6 +27,7 @@ export function Expenses({onClick, expenses, expensesVisibility, onCardClick, co
           title={e.title}
           endDate={e.endDate}
           value={e.value}
+          createdAt={e.createdAt}
         />
         ): <h2 className="text-xl text-center justify-center mt-5 md:mt-15">Nenhuma despesa criada</h2>
         }

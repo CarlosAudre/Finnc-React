@@ -1,6 +1,7 @@
 import { Message } from "@/components/Message";
 import { ProfileField } from "@/components/profile/ProfileField";
 import { FormProfile } from "@/forms/FormProfile";
+import { FormatDateToString } from "@/constants/FormatDateToString";
 import {
   User,
   Mail,
@@ -11,9 +12,10 @@ import {
   ShieldCheck,
   ArrowRight,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { months } from "@/constants/MonthsValue";
 
 export function Profile() {
   //API URL---------------------------------------------------------------------------------------------
@@ -23,6 +25,9 @@ export function Profile() {
   const [userEmail, setUserEmail] = useState("");
   const [userImage, setUserImage] = useState("");
   const [imageFile, setImageFile] = useState(null);
+  const [userCreatedAt, setUserCreatedAt] = useState("")
+  const date = new Date(userCreatedAt)
+
 
   const [changeUserName, setChangeUserName] = useState("");
   const [changeUserEmail, setChangeUserEmail] = useState("");
@@ -44,7 +49,7 @@ export function Profile() {
 
   //GetUser-----------------------------------------------------------------------------------------------
   useEffect(() => {
-    async function getUserName() {
+    async function getUser() {
       try {
         const token = localStorage.getItem("token");
         if (!token) {
@@ -66,13 +71,15 @@ export function Profile() {
         setUserName(data.name);
         setUserEmail(data.email);
         setUserImage(data.imgUrl);
+        setUserCreatedAt(data.createdAt)
       } catch (err) {
         console.log(err.message);
       }
     }
 
-    getUserName();
+    getUser();
   }, []);
+
 
   //Update UserName----------------------------------------------------------------------------------------
   async function updateUserName() {
@@ -122,18 +129,18 @@ export function Profile() {
   }
 
   //Update UserPhoto----------------------------------------------------------------------------------------
-  async function updateUserPhoto(photo) {
+  async function updateUserPhoto(file) {
     const token = localStorage.getItem("token");
-    if (!token) {
-      throw new Error("User not authenticated");
-    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
     const response = await fetch(`${apiUrl}/me/photo`, {
       method: "PUT",
       headers: {
-        "Content-type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ photo }),
+      body: formData,
     });
 
     if (!response.ok) {
@@ -263,7 +270,7 @@ export function Profile() {
     fileInputRef.current.click();
   }
 
-  function handleFileChange(e) {
+  async function handleFileChange(e) {
     const file = e.target.files[0];
 
     if (file) {
@@ -272,22 +279,13 @@ export function Profile() {
       const imageUrl = URL.createObjectURL(file);
       setImage(imageUrl);
 
-      const reader = new FileReader();
-
-      reader.onloadend = async () => {
-        const base64 = reader.result;
-
-        setUserImage(base64);
-
-        try {
-          await updateUserPhoto(base64);
-          toast.success("Foto atualizada");
-        } catch (err) {
-          toast.error(err.message);
-        }
-      };
-
-      reader.readAsDataURL(file);
+      try {
+        const updatedUser = await updateUserPhoto(file);
+        setUserImage(updatedUser.imgUrl); // URL vinda do backend
+        toast.success("Foto atualizada");
+      } catch (err) {
+        toast.error(err.message);
+      }
     }
   }
 
@@ -314,7 +312,7 @@ export function Profile() {
       <main className="flex flex-col flex-1 w-full gap-5">
         {/* CARD PERFIL */}
         <div
-          className="relative flex flex-col xl:flex-row bg-zinc-50/5 border-2 border-zinc-50/10 rounded-2xl 
+          className="relative flex flex-col xl:flex-row bg-slate-500/8 border border-slate-500/30 rounded-2xl 
         justify-center items-center xl:justify-between py-5 xl:py-6 md:px-10 gap-6 w-full"
         >
           {/* Left */}
@@ -357,7 +355,7 @@ export function Profile() {
 
             <div className="flex flex-col gap-1">
               <p className="text-sm text-zinc-50/70">Membro desde</p>
-              <p>Abril 2026</p>
+              <p>{FormatDateToString(date)}</p>
             </div>
           </div>
 
@@ -417,7 +415,7 @@ export function Profile() {
         )}
 
         {/* FORM DATA */}
-        <div className="flex flex-col bg-zinc-50/5 border-2 border-zinc-50/10 rounded-2xl p-5 py-10 gap-5">
+        <div className="flex flex-col bg-slate-500/8 border border-slate-500/30 rounded-2xl p-5 py-10 gap-5">
           <div className="flex flex-col gap-2 mb-5">
             <div className="flex font-semibold gap-3">
               <Settings />

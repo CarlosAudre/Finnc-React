@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, Wallet, Banknote, PiggyBank, PlusIcon } from "lucide-react";
+import {
+  ArrowRight,
+  Wallet,
+  Banknote,
+  PiggyBank,
+  PlusIcon,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/Button";
 import { HomeSummaryCard } from "@/components/home/HomeSummaryCard";
@@ -11,10 +17,10 @@ import { LastExpensesCard } from "@/components/home/LastExpensesCard";
 const apiUrl = "http://192.168.3.13:8081";
 
 export function Home() {
-  const [userName, setUserName] = useState();
+  const [userName, setUserName] = useState("");
 
   //-------------------------------------------------------------------------------------------------
-  const [balance, setBalance] = useState();
+  const [balance, setBalance] = useState(0);
   const [periodContainerTotalSpent, setPeriodContainerTotalSpent] =
     useState("");
   const [periodExpenseTotalSpent, setPeriodExpenseTotalSpent] = useState("");
@@ -144,12 +150,15 @@ export function Home() {
     <div className="min-h-screen mb-15 md:h-screen md:mb-0 max-w-5xl mx-auto flex flex-col md:p-3">
       <header className="flex flex-col md:flex-row justify-between pl-3 mb-3 ml-3 mt-3">
         <div className="flex flex-col gap-2">
-          <h1
-            className={"text-3xl font-semibold text-indigo-400"}
-          >{`Olá, ${userName ? userName : "Carregando usuário"}`}</h1>
-          <p
-            className={"text-slate-300/90 text-base"}
-          >{`Aqui está seu resumo financeiro de ${monthName}`}</p>
+          <h1 className="text-3xl">
+            Olá,{" "}
+            <span className="text-[#5D5CF8] font-semibold">
+              {userName ?? "Carregando usuário"}
+            </span>
+          </h1>
+          <p className={"text-slate-300/90 text-base"}>
+            {`Aqui está seu resumo financeiro de ${monthName}`}
+          </p>
         </div>
 
         <Button
@@ -197,7 +206,7 @@ export function Home() {
                   Crie seu primeiro container
                 </h1>
                 <p className="text-gray-400/80 text-center max-w-md mx-auto">
-                 Crie um container para começar a organizar suas despesas
+                  Crie um container para começar a organizar suas despesas
                 </p>
                 <Button
                   titleButton="Criar Container"

@@ -1,22 +1,22 @@
 export const containerColors = {
     PURPLE: {
       solid: "bg-violet-600",
-      soft: "bg-violet-600/20",
+      soft: "bg-violet-700/20",
     },
     BLUE: {
-      solid: "bg-blue-500",
-      soft: "bg-blue-500/20",
+      solid: "bg-indigo-600",
+      soft: "bg-indigo-600/20",
     },
     GREEN: {
       solid: "bg-emerald-500",
       soft: "bg-emerald-500/20",
     },
     YELLOW: {
-      solid: "bg-yellow-500",
-      soft: "bg-yellow-500/20",
+      solid: "bg-yellow-300",
+      soft: "bg-yellow-600/30",
     },
     RED: {
-      solid: "bg-rose-600",
+      solid: "bg-red-500",
       soft: "bg-rose-600/20",
     },
   };

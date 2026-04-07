@@ -17,6 +17,8 @@ import { ContainerCard } from "../components/period/ContainerCard";
 import { toast } from "sonner";
 import { containerColors } from "../constants/ContainerColors";
 import { months } from "../constants/MonthsValue";
+import { percent } from "framer-motion";
+import { FormatDateToString } from "@/constants/FormatDateToString";
 
 export function Period() {
   //API URL---------------------------------------------------------------------------------------------
@@ -193,6 +195,8 @@ export function Period() {
         title: newContainer.title,
         endDate: newContainer.endDate,
         totalValue: newContainer.totalValue,
+        totalSpent: newContainer.totalSpent,
+        economy: newContainer.economy,
         color: newContainer.color,
       };
       const newTotalSpent =
@@ -301,17 +305,19 @@ export function Period() {
               <h3 className="font-semibold text-2xl">Containers</h3>
               <p className="text-sm text-slate-300/70 ">{`R$${periodContainerEconomy} disponível para alocar`}</p>
             </div>
-            {containers.length > 0 && (<Button
-              titleButton={
-                noBalance
-                  ? `Saldo insuficiente: adicione maisnpm R$${Math.abs(periodContainerEconomy) + 1} no mês para criar um container `
-                  : "Criar Container"
-              }
-              title="Novo Container"
-              onClick={() => setFormContainerVisibility((prev) => !prev)}
-              img={<Plus />}
-              disabled={noBalance}
-            />)}
+            {containers.length > 0 && (
+              <Button
+                titleButton={
+                  noBalance
+                    ? `Saldo insuficiente: adicione maisnpm R$${Math.abs(periodContainerEconomy) + 1} no mês para criar um container `
+                    : "Criar Container"
+                }
+                title="Novo Container"
+                onClick={() => setFormContainerVisibility((prev) => !prev)}
+                img={<Plus />}
+                disabled={noBalance}
+              />
+            )}
           </div>
           <div
             className={`gap-10 md:gap-5 lg:gap-15 mt-7
@@ -329,7 +335,7 @@ export function Period() {
                     navigate(`/period/${year}/${month}/containers/${c.id}`)
                   }
                   title={c.title}
-                  endDate={c.endDate}
+                  endDate={FormatDateToString(c.endDate)}
                   containerTotalValue={c.totalValue}
                   containerLimite={c.economy}
                   percent={((c.totalSpent / c.totalValue) * 100).toFixed(1)}
