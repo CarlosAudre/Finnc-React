@@ -49,7 +49,7 @@ export function Login() {
               alt="Logo"
             ></img>
           </div>
-          <p className="text-sm md:text-base mt-3">
+          <p className="text-sm md:text-base">
             Ainda não possui uma conta?
           </p>
           <Link

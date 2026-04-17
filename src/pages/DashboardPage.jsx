@@ -15,6 +15,7 @@ import { OverviewChart } from "@/components/dashboards/OverviewChart";
 import { ComparativeChart } from "@/components/dashboards/ComparativeChart";
 import { CategoriesChart } from "@/components/dashboards/CategoriesChart";
 import { DashboardCalendar } from "@/components/dashboards/DashboardCalendar";
+import { formatToReal } from "@/constants/FormatToReal";
 
 export function DashboardPage() {
   //API URL---------------------------------------------------------------------------------------------
@@ -160,7 +161,7 @@ export function DashboardPage() {
             bgColor="bg-violet-600/15"
             period={year}
             title="Total recebido"
-            value={`R$ ${totalReceived}`}
+            value={`${formatToReal(totalSpent)}`}
           />
 
           <DaashboardCard
@@ -168,7 +169,7 @@ export function DashboardPage() {
             bgColor="bg-rose-600/15"
             period={year}
             title="Total gasto"
-            value={`R$ ${totalSpent}`}
+            value={`${formatToReal(totalSpent)}`}
           />
 
           <DaashboardCard
@@ -176,7 +177,7 @@ export function DashboardPage() {
             bgColor="bg-emerald-500/20"
             period={year}
             title="Total economizado"
-            value={`R$ ${totalEconomy}`}
+            value={`${formatToReal(totalEconomy)}`}
           />
 
           <DaashboardCard

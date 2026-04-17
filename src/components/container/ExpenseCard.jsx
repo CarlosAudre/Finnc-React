@@ -1,5 +1,6 @@
 import { Clock, Calendar } from "lucide-react";
 import { FormatDateToString } from "@/constants/FormatDateToString";
+import { formatToReal } from "@/constants/FormatToReal";
 
 export function ExpenseCard({ title, endDate, value, onClick, createdAt }) {
   const date = new Date(createdAt);
@@ -29,7 +30,7 @@ export function ExpenseCard({ title, endDate, value, onClick, createdAt }) {
           </div>
         </div>
       </div>
-      <p className="text-base md:text-lg font-semibold">R$ {value}</p>
+      <p className="text-base md:text-lg font-semibold">{formatToReal(value)}</p>
     </button>
   );
 }

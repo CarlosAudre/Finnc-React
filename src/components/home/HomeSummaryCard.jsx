@@ -1,3 +1,4 @@
+import { formatToReal } from "@/constants/FormatToReal";
 import { DollarSign } from "lucide-react";
 export function HomeSummaryCard({ value, spent, economy, percentage }) {
   const items = [
@@ -11,7 +12,7 @@ export function HomeSummaryCard({ value, spent, economy, percentage }) {
       <div className="flex justify-between items-center">
         <div className="flex flex-col">
           <p className="text-slate-300/90">Saldo do mês</p>
-          <h1 className="text-4xl font-bold text-indigo-400">R$ {value} </h1>
+          <h1 className="text-4xl font-bold text-indigo-400"> {formatToReal(value)} </h1>
         </div>
         <div className="bg-linear-to-r from-[#3B1BB8] to-[#3246e1] rounded-md p-3 text-white/80 ">
           <DollarSign className="w-7 h-8" />
@@ -28,7 +29,7 @@ export function HomeSummaryCard({ value, spent, economy, percentage }) {
                 <p className="font-semibold">
                   {item.label === "Taxa de poupança"
                     ? item.value + "%"
-                    : "R$ " + item.value}
+                    : formatToReal(item.value)}
                 </p>
               </div>
               {item.label !== "Taxa de poupança" && (

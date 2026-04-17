@@ -71,7 +71,7 @@ export function Register() {
               alt="Logo"
             ></img>
           </div>
-          <p className="text-sm md:text-base mt-3">Já possui uma conta?</p>
+          <p className="text-sm md:text-base">Já possui uma conta?</p>
           <Link
             className="text-sm md:text-base  hover:text-violet-400 hover:border-violet-600 border-2 rounded-md p-2"
             to="/login"

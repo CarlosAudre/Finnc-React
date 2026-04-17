@@ -1,3 +1,5 @@
+import { formatToReal } from "@/constants/FormatToReal";
+
 export function MostExpentCategories({
   onClick,
   title,
@@ -15,7 +17,7 @@ export function MostExpentCategories({
       <div className="flex flex-col gap-1 w-full">
         <div className="flex justify-between w-full">
           <p>{title}</p>
-          <p>R$ {totalSpent}</p>
+          <p>{formatToReal(totalSpent)}</p>
         </div>
         <div
           title={`${percent}%`}
@@ -30,7 +32,7 @@ export function MostExpentCategories({
         </div>
         <div>
           <p className="text-sm text-gray-400/90">
-            {percent}% de R$ {totalValue}
+            {percent}% de {formatToReal(totalValue)}
           </p>
         </div>
       </div>

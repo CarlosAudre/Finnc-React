@@ -10,6 +10,7 @@ import { FormContainer } from "../forms/FormContainer";
 import { Message } from "../components/Message";
 import { FormExpense } from "../forms/FormExpense";
 import { FormatDateToString } from "@/constants/FormatDateToString";
+import { formatToReal } from "@/constants/FormatToReal";
 
 export function ContainerPage() {
   //API URL---------------------------------------------------------------------------------------------
@@ -28,7 +29,7 @@ export function ContainerPage() {
   const containerCreatedDay = date.getDate();
   const [periodLimit, setPeriodLimit] = useState(0);
 
-  const noLimit = periodLimit <= 0;
+  const noLimit = periodLimit < 0;
 
   //Container Update-----------------------------------------------------------------------------------------
   const [containerTitleUpdate, setContainerTitleUpdate] = useState("");
@@ -358,17 +359,17 @@ export function ContainerPage() {
     <>
       <div className="flex justify-between md:flex-col text-center">
         <p className=" text-slate-300/70">Gasto</p>
-        <p className="text-xl md:text-2xl font-semibold">{`R$ ${containerTotalSpent}`}</p>
+        <p className="text-xl md:text-2xl font-semibold">{`${formatToReal(containerTotalSpent)}`}</p>
       </div>
 
       <div className="flex justify-between md:flex-col text-center">
         <p className=" text-slate-300/70">Total</p>
-        <p className="text-xl md:text-2xl text-emerald-400 font-semibold">{`R$ ${containerBalance}`}</p>
+        <p className="text-xl md:text-2xl text-emerald-400 font-semibold">{`${formatToReal(containerBalance)}`}</p>
       </div>
 
       <div className="flex justify-between md:flex-col text-center">
         <p className=" text-slate-300/70">Limite</p>
-        <p className="text-xl md:text-2xl text-slate-300/90 font-semibold">{`R$ ${containerLimit}`}</p>
+        <p className="text-xl md:text-2xl text-slate-300/90 font-semibold">{`${formatToReal(containerLimit)}`}</p>
       </div>
     </>
   );

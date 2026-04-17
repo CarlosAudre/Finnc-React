@@ -1,3 +1,4 @@
+import { formatToReal } from "@/constants/FormatToReal";
 import { FormBalance } from "../../forms/FormBalance";
 
 export function Card({
@@ -16,7 +17,7 @@ export function Card({
     <div className={`flex rounded-2xl justify-between ${bgColor} p-7 h-45`}>
       <div className="flex flex-col gap-3">
         <p className="text-slate-300/90 text-base">{title}</p>
-        <p className="font-semibold text-3xl">R$ {value}</p>
+        <p className="font-semibold text-3xl">{formatToReal(value)}</p>
         <p className="text-slate-300/70 text-sm font-semibold">{info}</p>
         {info2 && <p className="text-slate-300/70 text-sm font-semibold">{info2}</p>}
       </div>

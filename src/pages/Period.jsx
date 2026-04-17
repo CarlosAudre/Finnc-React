@@ -19,6 +19,7 @@ import { containerColors } from "../constants/ContainerColors";
 import { months } from "../constants/MonthsValue";
 import { percent } from "framer-motion";
 import { FormatDateToString } from "@/constants/FormatDateToString";
+import { formatToReal } from "@/constants/FormatToReal";
 
 export function Period() {
   //API URL---------------------------------------------------------------------------------------------
@@ -284,7 +285,7 @@ export function Period() {
             title="Total gasto"
             img={<Banknote />}
             value={`${periodExpenseTotalSpent ? periodExpenseTotalSpent : 0}`}
-            info={`Gasto em containers: R$ ${periodContainerTotalSpent ? periodContainerTotalSpent : 0}`}
+            info={`Gasto em containers: ${periodContainerTotalSpent ? formatToReal(periodContainerTotalSpent) : 0}`}
             info2={`${periodContainerCount} containers`}
           />
 
@@ -294,7 +295,7 @@ export function Period() {
             title="Disponível"
             img={<PiggyBank />}
             value={`${periodExpenseEconomy ? periodExpenseEconomy : 0}`}
-            info={`Disponível para containers: R$ ${periodContainerEconomy ? periodContainerEconomy : 0}`}
+            info={`Disponível para containers: ${periodContainerEconomy ? formatToReal(periodContainerEconomy) : 0}`}
           />
         </div>
 
@@ -358,7 +359,7 @@ export function Period() {
                 <Button
                   titleButton={
                     noBalance
-                      ? `Saldo insuficiente: adicione maisnpm R$${Math.abs(periodContainerEconomy) + 1} no mês para criar um container `
+                      ? `Saldo insuficiente: adicione mais R$${Math.abs(periodContainerEconomy) + 1} no mês para criar um container `
                       : "Criar Container"
                   }
                   title="Criar Container"

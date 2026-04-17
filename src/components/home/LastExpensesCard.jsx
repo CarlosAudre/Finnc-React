@@ -1,3 +1,4 @@
+import { formatToReal } from "@/constants/FormatToReal";
 import { Wallet } from "lucide-react";
 
 export function LastExpensesCard({onClick, title, value, containerTitle, color}){
@@ -17,7 +18,7 @@ export function LastExpensesCard({onClick, title, value, containerTitle, color})
           <p className="text-gray-400/90 text-sm">{containerTitle}</p>
         </div>
       </div>
-      <p className="text-base font-semibold">R$ {value}</p>
+      <p className="text-base font-semibold">{formatToReal(value)}</p>
     </button>
   );
 }

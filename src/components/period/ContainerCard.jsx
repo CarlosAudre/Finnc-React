@@ -1,3 +1,5 @@
+import { formatToReal } from "@/constants/FormatToReal";
+
 export function ContainerCard({
   title,
   onClick,
@@ -39,12 +41,12 @@ export function ContainerCard({
       <div className="flex justify-between mt-6">
         <div className="flex-col">
           <p className="font-semibold">Total</p>
-          <p className="text-xl">R$ {containerTotalValue}</p>
+          <p className="text-xl">{formatToReal(containerTotalValue)}</p>
         </div>
 
         <div className="flex-col">
           <p className="text-slate-300/80">Limite</p>
-          <p className="text-slate-300/80 text-md font-semibold">R$ {containerLimite}</p>
+          <p className="text-slate-300/80 text-md font-semibold">{formatToReal(containerLimite)}</p>
         </div>
       </div>
     </div>
