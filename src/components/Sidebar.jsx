@@ -58,13 +58,13 @@ export function Sidebar() {
           </Link>
 
           {/* FicAI */}
-          {/* <Link 
+          <Link 
           to={"/ficAi"}
           className={`${pathname === "/ficAi" ? selectedIconClass : nonSelectedIconClass}`}
           >
             <Bot/>
              <p className="text-amber-50">FicAi</p>
-          </Link>*/}
+          </Link>
         </div>
 
         {/* Profile */}

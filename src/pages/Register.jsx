@@ -8,7 +8,8 @@ import { LeftPart } from "@/components/auth/LeftPart";
 import { Mail, Lock, User } from "lucide-react";
 
 export function Register() {
-  const apiUrl = "http://192.168.3.13:8081";
+   const apiUrl = "http://192.168.3.13:8081";
+    //const apiUrl = "http://3.238.206.37:8081";
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

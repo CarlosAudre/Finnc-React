@@ -19,7 +19,8 @@ import { formatToReal } from "@/constants/FormatToReal";
 
 export function DashboardPage() {
   //API URL---------------------------------------------------------------------------------------------
-  const apiUrl = "http://192.168.3.13:8081";
+   const apiUrl = "http://192.168.3.13:8081";
+    //const apiUrl = "http://3.238.206.37:8081";
 
   //Summary Values--------------------------------------------------------------------------------------
   const [totalReceived, setTotalReceived] = useState("0");
@@ -161,7 +162,7 @@ export function DashboardPage() {
             bgColor="bg-violet-600/15"
             period={year}
             title="Total recebido"
-            value={`${formatToReal(totalSpent)}`}
+            value={`${formatToReal(totalReceived)}`}
           />
 
           <DaashboardCard
